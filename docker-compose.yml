@@ -1,7 +1,7 @@
 version: '3'
 services:
   argo-express:
-    build: . #specify the directory of the Dockerfile
+    image: argovis/argo-express:dev
     restart: always
     ports: 
     - '3000:3000' # specify port forwarding
