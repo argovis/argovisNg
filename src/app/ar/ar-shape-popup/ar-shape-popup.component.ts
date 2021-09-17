@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { ArQueryService } from './../ar-query.service'
-import { Constants } from '../globals/constants'
+import { Constants } from '../../globals/constants'
 
 @Component({
   selector: 'app-ar-shape-popup',
