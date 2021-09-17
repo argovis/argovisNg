@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ARShape } from '../models/ar-shape'
+import { Constants } from ../globals/constants
 import * as moment from 'moment';
 import { mockShapeComplex } from './ar-shape.parameters'
 @Injectable({
@@ -19,7 +20,7 @@ export class ArShapeService {
   }
 
   public get_ar_shapes(dateString: string): Observable<ARShape[]> {
-    let url = ''
+    let url = Constants.apiRoot
     url += '/arShapes/findByDate?date='+dateString;
     return this.http.get<ARShape[]>(url)
   }
