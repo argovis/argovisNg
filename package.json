@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "stats": "webpack-bundle-analyzer dist/stats.json",
-    "ng-high-memory": "node --max_old_space_size=12000 ./node_modules/@angular/cli/bin/ng build --prod"
+    "ng-high-memory": "node --max_old_space_size=12000 ./node_modules/@angular/cli/bin/ng build --configuration=production"
   },
   "private": true,
   "dependencies": {

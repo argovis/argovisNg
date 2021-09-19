@@ -5,8 +5,8 @@ services:
     restart: always
     ports: 
     - '3000:3000'
-    command: CMD ["pm2", "devstart", "process.json", "--no-daemon"] #development
-    # command: CMD ["pm2", "start", "process.json", "--no-daemon"] # production
+    command: npm run devstart # development
+    command: npm run start    # production
   database:
     image: mongo:4.2.3
     restart: always
