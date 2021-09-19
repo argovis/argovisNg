@@ -5,8 +5,8 @@ services:
     restart: always
     ports: 
     - '3000:3000'
-    command: npm run devstart # development
-    command: npm run start    # production
+    command: bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080             #development
+    #command: bash /usr/src/ng_argovis/docker-entrypoint.sh http://argovis.colorado.edu:8080  #production
   database:
     image: mongo:4.2.3
     restart: always

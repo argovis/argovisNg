@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiRoot: 'localhost:8080'
+  apiRoot: 'ARGOVIS_API_ROOT'
 };
