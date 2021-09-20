@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +77,7 @@ export class CovarService {
 
   public buildDataUrl(): void {
     const lngLat = this.getLngLat()
-    let url = '/covarGrid'
+    let url = environment.apiRoot + '/covarGrid'
     url += '/' + JSON.stringify(lngLat[0])
     url += '/' + JSON.stringify(lngLat[1])
 
