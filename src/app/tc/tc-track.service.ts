@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import * as L from 'leaflet';
 import { Observable, of } from 'rxjs';
 import { TcTrack, TrajData } from '../models/tc-shape'
+import { environment } from '../../environments/environment';
 import { carlotta } from './tc-track.parameters'
 
 @Injectable({
@@ -36,17 +37,17 @@ export class TcTrackService extends PointsService {
   }
 
   public get_tc_tracks_by_date_range(startDate: moment.Moment, endDate: moment.Moment): Observable<TcTrack[]> {
-    let url = `/tc/findByDateRange?startDate=${startDate.format('YYYY-MM-DDTHH:mm:ss')}&endDate=${endDate.format('YYYY-MM-DDTHH:mm:ss')}`
+    let url =  environment.apiRoot + `/tc/findByDateRange?startDate=${startDate.format('YYYY-MM-DDTHH:mm:ss')}&endDate=${endDate.format('YYYY-MM-DDTHH:mm:ss')}`
     return this.http.get<TcTrack[]>(url)
   }
 
   public get_tc_tracks_by_name_year(name: string, year: string): Observable<TcTrack[]> {
-    let url = `/tc/findByNameYear?name=${name}&year=${year}`
+    let url =  environment.apiRoot + `/tc/findByNameYear?name=${name}&year=${year}`
     return this.http.get<TcTrack[]>(url)
   }
 
   public get_storm_names(): Observable<string[]> {
-    return this.http.get<string[]>('/tc/stormNameList')
+    return this.http.get<string[]>( environment.apiRoot + '/tc/stormNameList')
   }
 
   public make_wrapped_latLngs(latLngs: number[][]): number[][][] {
