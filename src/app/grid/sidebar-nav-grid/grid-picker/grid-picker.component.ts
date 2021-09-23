@@ -61,7 +61,6 @@ export class GridPickerComponent implements OnInit {
         this.availableGrids = this.selectGridService.getAvailableGrids(this.selectedProperty)
        }
       })
- 
 
   getPropertyViewValue(param: string): string {
     const viewValue = this.availableProperties.find( (p) => p.param === param )['viewValue']

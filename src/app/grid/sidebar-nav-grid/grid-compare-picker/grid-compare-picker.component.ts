@@ -16,7 +16,7 @@ export class GridComparePickerComponent implements OnInit {
   public compareGrid: boolean
   public grid: string
   public param: string
-  @Input() paramM	ode: boolean
+  @Input() paramMode: boolean
 
   public availableGrids: GridGroup[]
 
