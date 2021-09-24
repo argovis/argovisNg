@@ -1,7 +1,7 @@
 version: '3'
 services:
   argo-express:
-    image: argovis/argo-express:dev
+    image: argovis/argo-express:devhack
     restart: always
     ports: 
     - '3000:3000'
@@ -13,8 +13,8 @@ services:
     ports:
       - '127.0.0.1:27017:27017'
     volumes:
-      # - /storage/mongodb:/data/db:Z # development
-      - /data/argovis/storage/mongodb:/data/db:Z # production
+       - /Users/billmills/argovis/argovis-tutorial/data/argovis/storage/mongodb:/data/db:Z # development
+      #- /data/argovis/storage/mongodb:/data/db:Z # production
   api:
     image: argovis/argovis_api:dev
     restart: always
