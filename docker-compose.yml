@@ -1,7 +1,7 @@
 version: '3'
 services:
   argo-express:
-    image: argovis/argo-express:devhack
+    image: argovis/argo-express:dev
     restart: always
     ports: 
     - '3000:3000'
@@ -20,6 +20,11 @@ services:
     restart: always
     ports:
      - 8080:8080
+  datapages:
+    image: argovis/datapages:dev
+    restart: always
+    ports:
+     - 3030:3000
   # netdata:
   #   image: netdata/netdata
   #   restart: always
