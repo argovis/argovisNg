@@ -103,23 +103,25 @@ export class PointsService {
 
   public get_selection_points(daterange: DateRange, transformedShape: number[][][], presRange?: [number, number]): Observable<ProfilePoints[]> {
     let base = '/selection/profiles/map'
-    let url = base+'?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate
-    url += '&shape='+JSON.stringify(transformedShape)
-    if (presRange) { url += '&presRange='+JSON.stringify(presRange) }
+    let url = environment.apiRoot + '/profiles?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate + '&polygon=' + JSON.stringify(transformedShape[0])
+    if (presRange) { url += '&presRange=' + presRange[0] + ',' + presRange[1] }
     return this.http.get<ProfilePoints[]>(url);
   }
 
   public get_platform_profiles(platform: string): Observable<ProfilePoints[]> {
-    const url = '/catalog/platforms/' + platform + '/map';
+    const url = environment.apiRoot + '/profiles?platforms='+platform+'&coreMeasurements=all';
     return this.http.get<ProfilePoints[]>(url)
   }
 
   public get_latest_profiles(): Observable<ProfilePoints[]> {
     const url = '/selection/latestProfiles/map'
+    console.log('get_latest_profiles', url)
     return this.http.get<ProfilePoints[]>(url);
   }
+
   public get_last_profiles(): Observable<ProfilePoints[]> {
     const url = '/selection/lastProfiles/map';
+    console.log('get_last_profiles', url)
     return this.http.get<ProfilePoints[]>(url);
   }
 
@@ -133,7 +135,6 @@ export class PointsService {
     let start = new Date(end);
     start.setDate(end.getDate() - 3);
     let url = environment.apiRoot + '/profiles?startDate='+start.toISOString()+'&endDate='+end.toISOString();
-    console.log(url)
     return this.http.get<ProfilePoints[]>(url);
   }
 
@@ -141,6 +142,7 @@ export class PointsService {
     let url = '/selection/globalMapProfiles/'
     url += startDate + '/'
     url += endDate
+    console.log('get_global_map_profiles', url)
     return this.http.get<ProfilePoints[]>(url)
   }
 
