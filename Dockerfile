@@ -10,11 +10,5 @@ RUN npm install && \
     npm install -g pm2
 COPY . .
 RUN npm run ng-high-memory
-#Install and run express app
-WORKDIR /usr/src/ng_argovis/argovis_backend
-RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
-EXPOSE 3000
 CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080
 

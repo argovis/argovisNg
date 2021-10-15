@@ -8,6 +8,7 @@ import * as L from 'leaflet';
 import { PopupCompileService } from './popup-compile.service';
 import { ProfPopupComponent } from '../prof-popup/prof-popup.component';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -123,10 +124,16 @@ export class PointsService {
   }
 
   public get_last_three_days_profiles(startDate: string): Observable<ProfilePoints[]> {
-    let url = '/selection/lastThreeDays/';
-    if (startDate) {
-      url += startDate
-    }
+    // get three days of history ending on startDate, or ending right now if startDate absent.
+
+    let end = new Date()
+    if(startDate){
+      end = new Date(startDate); // counting backwards in time here...
+    } 
+    let start = new Date(end);
+    start.setDate(end.getDate() - 3);
+    let url = environment.apiRoot + '/profiles?startDate='+start.toISOString()+'&endDate='+end.toISOString();
+    console.log(url)
     return this.http.get<ProfilePoints[]>(url);
   }
 
