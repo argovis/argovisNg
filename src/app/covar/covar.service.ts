@@ -77,12 +77,12 @@ export class CovarService {
 
   public buildDataUrl(): void {
     const lngLat = this.getLngLat()
-    let url = environment.apiRoot + '/covarGrid'
-    url += '/' + JSON.stringify(lngLat[0])
-    url += '/' + JSON.stringify(lngLat[1])
+    let url = environment.apiRoot + '/covarGrid?'
+    url += 'lat=' + JSON.stringify(lngLat[0])
+    url += '&lon=' + JSON.stringify(lngLat[1])
 
     const forcastDays = this.getForcast()
-    url += '/' + JSON.stringify(forcastDays)
+    url += '&forcastDays=' + JSON.stringify(forcastDays)
     this.dataUrl = url
   }
 

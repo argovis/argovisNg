@@ -113,18 +113,6 @@ export class PointsService {
     return this.http.get<ProfilePoints[]>(url)
   }
 
-  public get_latest_profiles(): Observable<ProfilePoints[]> {
-    const url = '/selection/latestProfiles/map'
-    console.log('get_latest_profiles', url)
-    return this.http.get<ProfilePoints[]>(url);
-  }
-
-  public get_last_profiles(): Observable<ProfilePoints[]> {
-    const url = '/selection/lastProfiles/map';
-    console.log('get_last_profiles', url)
-    return this.http.get<ProfilePoints[]>(url);
-  }
-
   public get_last_three_days_profiles(startDate: string): Observable<ProfilePoints[]> {
     // get three days of history ending on startDate, or ending right now if startDate absent.
 
@@ -139,10 +127,7 @@ export class PointsService {
   }
 
   public get_global_map_profiles(startDate: string, endDate: string): Observable<ProfilePoints[]> {
-    let url = '/selection/globalMapProfiles/'
-    url += startDate + '/'
-    url += endDate
-    console.log('get_global_map_profiles', url)
+    let url = environment.apiRoot + '/profiles?startDate=' + startDate + '&endDate=' + endDate 
     return this.http.get<ProfilePoints[]>(url)
   }
 
