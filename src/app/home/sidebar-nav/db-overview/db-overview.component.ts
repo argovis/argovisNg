@@ -3,6 +3,7 @@ import { DatabaseOverview } from '../../../models/db-overview'
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 
 
@@ -34,7 +35,7 @@ export class DbOverviewComponent implements OnInit {
   }
 
   private get_database_info(): Observable<DatabaseOverview> {
-    const url = '/selection/overview';
+    const url = environment.apiRoot + '/profiles/overview';
     return this.http.get<DatabaseOverview>(url)
   }
 }
