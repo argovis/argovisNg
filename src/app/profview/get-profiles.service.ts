@@ -3,6 +3,7 @@ import { Profile, BgcProfileData, ProfileMeta, PlatformMeta } from './profiles'
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router'
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -44,47 +45,18 @@ export class GetProfilesService {
     return this.http.get<Profile[]>(url)
   }
 
-  public getTestProfiles(): Observable<Profile[]> {
-    const url = 'http://localhost:3000/selection/profiles/?startDate=2020-03-02&endDate=2020-03-16&presRange=[0,10]&shape=[[[168.925781,39.368279],[178.639136,34.666611],[-180,33.814502],[-180,33.814502],[-172.760507,29.28147],[-165.058594,23.402765],[-174.376336,22.951933],[-180,22.348601],[-180,22.348601],[176.404142,21.962821],[167.34375,20.468189],[168.925781,39.368279]]]'
-    return this.getProfiles(url)
-  }
-
-  public getTestPlaformData(): Observable<BgcProfileData[]> {
-    const platform = '5903260'
-    const meas_1 = 'pres'
-    const meas_2 = 'temp'
-    let url = 'catalog/bgc_platform_data/'
-    url += platform + '/?'
-    url += 'meas_1=' + meas_1 + '&' + 'meas_2=' + meas_2
-    return this.http.get<BgcProfileData[]>(url)
-  }
-
   public get_platform_data(platform: string, meas_1: string, meas_2: string): Observable<BgcProfileData[]> {
-    let url = 'catalog/bgc_platform_data/'
-    url += platform + '/?'
-    url += 'meas_1=' + meas_1 + '&' + 'meas_2=' + meas_2
+    let url = environment.apiRoot + '/profiles?platforms=' + platform + '&bgcMeasurements=' + meas_1 + ',' + meas_2
     return this.http.get<BgcProfileData[]>(url)
-  }
-
-  public getTestPlaformProfileMetadata(): Observable<ProfileMeta[]> {
-    const platform = '5903260'
-    return this.getPlaformProfileMetaData(platform)
   }
 
   public getPlaformProfileMetaData(platform: string): Observable<ProfileMeta[]> {
-    let url = 'catalog/platform_profile_metadata/'
-    url += platform
+    let url = environment.apiRoot + '/profiles?platforms=' + platform
     return this.http.get<ProfileMeta[]>(url)
   }
 
-  public getTestPlaformMetaData(): Observable<PlatformMeta[]> {
-    const platform = '5903260'
-    return this.getPlaformMetaData(platform)
-  }
-
   public getPlaformMetaData(platform: string): Observable<PlatformMeta[]> {
-    let url = 'catalog/platform_metadata/'
-    url += platform
+    let url = environment.apiRoot + '/platforms?platform=' + platform
     return this.http.get<PlatformMeta[]>(url)
   }
 
