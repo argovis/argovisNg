@@ -21,7 +21,7 @@ export class ArShapeService {
 
   public get_ar_shapes(dateString: string): Observable<ARShape[]> {
     let url = environment.apiRoot
-    url += '/arShapes/findByDate?date='+dateString;
+    url += '/ar?date='+dateString;
     return this.http.get<ARShape[]>(url)
   }
 

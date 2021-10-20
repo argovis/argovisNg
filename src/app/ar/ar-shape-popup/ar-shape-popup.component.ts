@@ -82,7 +82,7 @@ export class ArShapePopupComponent implements OnInit {
   }
 
   public go_to_shape_json(): void {
-    const windowURL = environment.apiRoot + '/arShapes/findByID?_id=' + this.shape_id
+    const windowURL = environment.apiRoot + '/ar?_id=' + this.shape_id
     window.open(windowURL,"_blank")
   } 
 
