@@ -110,7 +110,7 @@ export class SelectGridService {
 
   public getGridMeta(gridName: string): Observable<GridMeta[]> {
     const url = environment.apiRoot +'/griddedProducts/gridMetadata?gridName=' + gridName
-    return this.http.get<GridMeta[]>(url)
+    return this.http.get<GridMeta[]>(url, {'headers': environment.apiHeaders})
   }
 
 }

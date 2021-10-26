@@ -42,22 +42,22 @@ export class GetProfilesService {
   }
 
   public getProfiles(url: string): Observable<Profile[]> {
-    return this.http.get<Profile[]>(url)
+    return this.http.get<Profile[]>(url, {'headers': environment.apiHeaders})
   }
 
   public get_platform_data(platform: string, meas_1: string, meas_2: string): Observable<BgcProfileData[]> {
     let url = environment.apiRoot + '/profiles?platforms=' + platform + '&bgcMeasurements=' + meas_1 + ',' + meas_2
-    return this.http.get<BgcProfileData[]>(url)
+    return this.http.get<BgcProfileData[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getPlaformProfileMetaData(platform: string): Observable<ProfileMeta[]> {
     let url = environment.apiRoot + '/profiles?platforms=' + platform
-    return this.http.get<ProfileMeta[]>(url)
+    return this.http.get<ProfileMeta[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getPlaformMetaData(platform: string): Observable<PlatformMeta[]> {
     let url = environment.apiRoot + '/platforms?platform=' + platform
-    return this.http.get<PlatformMeta[]>(url)
+    return this.http.get<PlatformMeta[]>(url, {'headers': environment.apiHeaders})
   }
 
 

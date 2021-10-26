@@ -36,7 +36,7 @@ export class DbOverviewComponent implements OnInit {
 
   private get_database_info(): Observable<DatabaseOverview> {
     const url = environment.apiRoot + '/profiles/overview';
-    return this.http.get<DatabaseOverview>(url)
+    return this.http.get<DatabaseOverview>(url, {'headers': environment.apiHeaders})
   }
 }
 

@@ -38,16 +38,16 @@ export class TcTrackService extends PointsService {
 
   public get_tc_tracks_by_date_range(startDate: moment.Moment, endDate: moment.Moment): Observable<TcTrack[]> {
     let url =  environment.apiRoot + `/tc?startDate=${startDate.format('YYYY-MM-DDTHH:mm:ss')}&endDate=${endDate.format('YYYY-MM-DDTHH:mm:ss')}`
-    return this.http.get<TcTrack[]>(url)
+    return this.http.get<TcTrack[]>(url, {'headers': environment.apiHeaders})
   }
 
   public get_tc_tracks_by_name_year(name: string, year: string): Observable<TcTrack[]> {
     let url =  environment.apiRoot + `/tc?name=${name}&year=${year}`
-    return this.http.get<TcTrack[]>(url)
+    return this.http.get<TcTrack[]>(url, {'headers': environment.apiHeaders})
   }
 
   public get_storm_names(): Observable<string[]> {
-    return this.http.get<string[]>( environment.apiRoot + '/tc/stormNameList')
+    return this.http.get<string[]>( environment.apiRoot + '/tc/stormNameList', {'headers': environment.apiHeaders})
   }
 
   public make_wrapped_latLngs(latLngs: number[][]): number[][][] {

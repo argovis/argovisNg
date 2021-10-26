@@ -53,7 +53,7 @@ export class RasterService extends GridService {
     url += '&presLevel=' + pres
     url += '&date=' + d.toISOString()
     url += '&gridName=' + gridName
-    return this.http.get<Grid[]>(url)
+    return this.http.get<Grid[]>(url, {'headers': environment.apiHeaders})
     }
 
   public getGridCoords( latRange: number[], lonRange: number[], gridName: string): Observable<GridCoords[]> {
@@ -61,7 +61,7 @@ export class RasterService extends GridService {
     url += 'latRange=' + latRange[0] + ',' + latRange[1]
     url += '&lonRange=' + lonRange[0] + ',' + lonRange[1]
     url += '&gridName=' + gridName
-    return this.http.get<GridCoords[]>(url) 
+    return this.http.get<GridCoords[]>(url, {'headers': environment.apiHeaders}) 
   }
 
   public getParamRaster(latRange: number[], lonRange: number[], pres: number,
@@ -72,7 +72,7 @@ export class RasterService extends GridService {
     url += '&presLevel=' + pres
     url += '&gridName=' + gridName
     url += '&param=' + gridParam
-    return this.http.get<RasterParam[]>(url)
+    return this.http.get<RasterParam[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getTwoParamRaster(latRange: number[], lonRange: number[], pres: number,
@@ -93,7 +93,7 @@ export class RasterService extends GridService {
     url += '&gridName=' + gridName
     url += '&date=' + d.toISOString()
     url += '&presLevel=' + pres
-    return this.http.get<RasterGrid[]>(url)
+    return this.http.get<RasterGrid[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getTwoGridRasterProfiles(latRange: number[], lonRange: number[],

@@ -105,12 +105,12 @@ export class PointsService {
     let base = '/selection/profiles/map'
     let url = environment.apiRoot + '/profiles?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate + '&polygon=' + JSON.stringify(transformedShape[0])
     if (presRange) { url += '&presRange=' + presRange[0] + ',' + presRange[1] }
-    return this.http.get<ProfilePoints[]>(url);
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders});
   }
 
   public get_platform_profiles(platform: string): Observable<ProfilePoints[]> {
     const url = environment.apiRoot + '/profiles?platforms='+platform+'&coreMeasurements=all';
-    return this.http.get<ProfilePoints[]>(url)
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders})
   }
 
   public get_last_three_days_profiles(startDate: string): Observable<ProfilePoints[]> {
@@ -123,12 +123,12 @@ export class PointsService {
     let start = new Date(end);
     start.setDate(end.getDate() - 3);
     let url = environment.apiRoot + '/profiles?startDate='+start.toISOString()+'&endDate='+end.toISOString();
-    return this.http.get<ProfilePoints[]>(url);
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders});
   }
 
   public get_global_map_profiles(startDate: string, endDate: string): Observable<ProfilePoints[]> {
     let url = environment.apiRoot + '/profiles?startDate=' + startDate + '&endDate=' + endDate 
-    return this.http.get<ProfilePoints[]>(url)
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders})
   }
 
   // plots the markers on the map three times. 
