@@ -8,6 +8,7 @@ import * as L from 'leaflet';
 import { PopupCompileService } from './popup-compile.service';
 import { ProfPopupComponent } from '../prof-popup/prof-popup.component';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -102,39 +103,32 @@ export class PointsService {
 
   public get_selection_points(daterange: DateRange, transformedShape: number[][][], presRange?: [number, number]): Observable<ProfilePoints[]> {
     let base = '/selection/profiles/map'
-    let url = base+'?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate
-    url += '&shape='+JSON.stringify(transformedShape)
-    if (presRange) { url += '&presRange='+JSON.stringify(presRange) }
-    return this.http.get<ProfilePoints[]>(url);
+    let url = environment.apiRoot + '/profiles?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate + '&polygon=' + JSON.stringify(transformedShape[0])
+    if (presRange) { url += '&presRange=' + presRange[0] + ',' + presRange[1] }
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders});
   }
 
   public get_platform_profiles(platform: string): Observable<ProfilePoints[]> {
-    const url = '/catalog/platforms/' + platform + '/map';
-    return this.http.get<ProfilePoints[]>(url)
-  }
-
-  public get_latest_profiles(): Observable<ProfilePoints[]> {
-    const url = '/selection/latestProfiles/map'
-    return this.http.get<ProfilePoints[]>(url);
-  }
-  public get_last_profiles(): Observable<ProfilePoints[]> {
-    const url = '/selection/lastProfiles/map';
-    return this.http.get<ProfilePoints[]>(url);
+    const url = environment.apiRoot + '/profiles?platforms='+platform+'&coreMeasurements=all';
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders})
   }
 
   public get_last_three_days_profiles(startDate: string): Observable<ProfilePoints[]> {
-    let url = '/selection/lastThreeDays/';
-    if (startDate) {
-      url += startDate
-    }
-    return this.http.get<ProfilePoints[]>(url);
+    // get three days of history ending on startDate, or ending right now if startDate absent.
+
+    let end = new Date()
+    if(startDate){
+      end = new Date(startDate); // counting backwards in time here...
+    } 
+    let start = new Date(end);
+    start.setDate(end.getDate() - 3);
+    let url = environment.apiRoot + '/profiles?startDate='+start.toISOString()+'&endDate='+end.toISOString();
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders});
   }
 
   public get_global_map_profiles(startDate: string, endDate: string): Observable<ProfilePoints[]> {
-    let url = '/selection/globalMapProfiles/'
-    url += startDate + '/'
-    url += endDate
-    return this.http.get<ProfilePoints[]>(url)
+    let url = environment.apiRoot + '/profiles?startDate=' + startDate + '&endDate=' + endDate 
+    return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders})
   }
 
   // plots the markers on the map three times. 

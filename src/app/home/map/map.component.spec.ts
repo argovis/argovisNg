@@ -26,7 +26,6 @@ describe('MapComponent', () => {
   let spyURL: jasmine.Spy;
   let get_selection_pointsSpy: jasmine.Spy;
   let get_platform_profilesSpy: jasmine.Spy;
-  let get_latest_profiles: jasmine.Spy;
   let getLastThreeDaysProfiles: jasmine.Spy;
   let popupWindowCreationSpy: jasmine.Spy;
 
@@ -62,7 +61,6 @@ describe('MapComponent', () => {
 
     const get_selection_points = spyOn(pointsService, 'get_selection_points').and.returnValue(mockPoints)
     const get_platform_profiles = spyOn(pointsService, 'get_platform_profiles').and.returnValue(mockPoints)
-    const get_latest_profiles = spyOn(pointsService, 'get_latest_profiles').and.returnValue(mockPoints)
     const getLastThreeDaysProfiles = spyOn(pointsService, 'get_last_three_days_profiles').and.returnValue(mockPoints)
     const popupWindowCreationSpy = spyOn(mapService, 'popup_window_creation').and.callThrough()
     spyURL = spyOn(queryService, 'set_url'); 

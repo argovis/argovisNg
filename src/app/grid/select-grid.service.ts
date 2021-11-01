@@ -2,6 +2,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { GridGroup, ProducerGroup, MeasGroup, GridParamGroup, EarthProperty, ModelParam, GridMeta } from './../../typeings/grids'
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
+import { environment } from '../../environments/environment';
 import * as moment from 'moment'
 @Injectable({
   providedIn: 'root'
@@ -108,8 +109,8 @@ export class SelectGridService {
   }
 
   public getGridMeta(gridName: string): Observable<GridMeta[]> {
-    const url = '/griddedProducts/gridMetadata?gridName=' + gridName
-    return this.http.get<GridMeta[]>(url)
+    const url = environment.apiRoot +'/griddedProducts/gridMetadata?gridName=' + gridName
+    return this.http.get<GridMeta[]>(url, {'headers': environment.apiHeaders})
   }
 
 }

@@ -218,7 +218,11 @@ export class MapComponent implements OnInit, OnDestroy {
       }
       },
       error => {
-        this.notifier.notify( 'error', 'error in getting last three day profiles' )
+        if (error.error.code == 404){
+          this.notifier.notify( 'warning', '404 | zero profile points returned' )
+        } else {
+          this.notifier.notify( 'error', error.error.code + ' | ' + error.error.message )
+        }
       })
     }
   
