@@ -5,6 +5,7 @@ import { QueryProfviewService } from '../query-profview.service'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
 import { MatSort } from '@angular/material/sort'
+import { DataexchangeService } from "../dataexchange.service"
 
 @Component({
   selector: 'app-table',
@@ -17,10 +18,11 @@ export class TableComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort
 
   constructor(private getProfileService: GetProfilesService, 
-              private queryProfviewService: QueryProfviewService ) { }
+              private queryProfviewService: QueryProfviewService,
+              public exchange: DataexchangeService ) { }
   public metaColumns: string[] = ['cycle_number', '_id', 'dac', 'date',
                                    'lat_str', 'lon_str',
-                                    'DATA_MODE']
+                                    'DATA_MODE', 'display']
   public dataSource: any
   public platform_number: string
   public statParamKey: string
@@ -51,6 +53,10 @@ export class TableComponent implements OnInit {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+  }
+
+  toggleProfile(values: any): void {
+    this.exchange.sendData({id: values.currentTarget.id, checked: values.currentTarget.checked});
   }
 
 }

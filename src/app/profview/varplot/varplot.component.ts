@@ -2,6 +2,8 @@ import { Component, OnInit, Input, AfterViewInit, OnChanges } from '@angular/cor
 import { StationParameters } from '../profiles'
 import { GetProfilesService } from '../get-profiles.service'
 import { QueryProfviewService } from '../query-profview.service';
+import { Subscription } from 'rxjs/Subscription';
+import { DataexchangeService } from "../dataexchange.service"
 
 @Component({
   selector: 'app-varplot',
@@ -20,9 +22,11 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public statParams: StationParameters[]
   public graph: any
   public symbols: any
+  public tableSubscription: any
 
   constructor(private getProfileService: GetProfilesService,
-              private queryProfviewService: QueryProfviewService) { }
+              private queryProfviewService: QueryProfviewService,
+              public exchange: DataexchangeService) { }
 
   ngOnInit(): void {
     this.symbols = ['circle', 'square', 'diamond', 'triangle-up', 'x']
@@ -45,7 +49,13 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     error => {
       console.error('an error occured when listening to changeStatParams: ', error)
     })
+
+    this.tableSubscription = this.exchange.getData().subscribe(message => {
+      console.log(message);
+      //call you action which need to execute in this component on button clicked
+    });
   }
+
 
   ngAfterViewInit() {
     return
@@ -81,6 +91,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
             return {
               type: 'scatter', 
               mode: 'markers',
+              name: p['_id'],
               x: p.bgcMeas.map(x => x[this.xAxis]),
               y: p.bgcMeas.map(y => y[this.yAxis]),
               marker: {color: p.bgcMeas.map(z => z[this.zAxis]), colorscale: 'Viridis'}
