@@ -72,7 +72,7 @@ export class ColorChartComponent implements OnInit {
   } 
 
   make_chart(): void {
-    this.getProfileService.get_platform_data(this.platform_number, this.yLabel, this.colorLabel).subscribe( (profileData: BgcProfileData[] | CoreProfileData[] | any) => {
+    this.getProfileService.get_platform_data(this.platform_number, [this.yLabel, this.colorLabel]).subscribe( (profileData: BgcProfileData[] | CoreProfileData[] | any) => {
       this.profileData = profileData
       const defaultColorScale = true
       this.set_chart(this.profileData, defaultColorScale)

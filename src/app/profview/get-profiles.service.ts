@@ -45,8 +45,8 @@ export class GetProfilesService {
     return this.http.get<Profile[]>(url, {'headers': environment.apiHeaders})
   }
 
-  public get_platform_data(platform: string, meas_1: string, meas_2: string): Observable<BgcProfileData[]> {
-    let url = environment.apiRoot + '/profiles?platforms=' + platform + '&bgcMeasurements=' + meas_1 + ',' + meas_2
+  public get_platform_data(platform: string, meas: string[]): Observable<BgcProfileData[]> {
+    let url = environment.apiRoot + '/profiles?platforms=' + platform + '&bgcMeasurements=' + meas.join(',')
     return this.http.get<BgcProfileData[]>(url, {'headers': environment.apiHeaders})
   }
 

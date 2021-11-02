@@ -61,7 +61,7 @@ export class LineChartComponent implements OnInit {
   } 
 
   make_chart(): void {
-    this.getProfileService.get_platform_data(this.platform_number, this.chartLabels.x2, this.chartLabels.x1).subscribe( (profileData: BgcProfileData[] | CoreProfileData[] | any) => {
+    this.getProfileService.get_platform_data(this.platform_number, [this.chartLabels.x2, this.chartLabels.x1]).subscribe( (profileData: BgcProfileData[] | CoreProfileData[] | any) => {
       this.profileData = profileData
       this.set_chart(this.profileData)
       this.revision += 1;

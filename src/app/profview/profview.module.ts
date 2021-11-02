@@ -12,11 +12,12 @@ import { PlatformWindowComponent } from './platform-window/platform-window.compo
 import { GlobeScatterComponent } from './globe-scatter/globe-scatter.component';
 import { ColorbarComponent } from './colorbar/colorbar.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { VarplotComponent } from './varplot/varplot.component';
  
 PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
-  declarations: [ProfviewComponent, TableComponent, ColorChartComponent, PlatformWindowComponent, GlobeScatterComponent, ColorbarComponent, LineChartComponent],
+  declarations: [ProfviewComponent, TableComponent, ColorChartComponent, PlatformWindowComponent, GlobeScatterComponent, ColorbarComponent, LineChartComponent, VarplotComponent],
   imports: [
     CommonModule,
     MaterialModule,

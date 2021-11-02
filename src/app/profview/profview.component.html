@@ -39,5 +39,12 @@
             </mat-grid-tile>
         </mat-grid-list>
     </mat-tab>
+    <mat-tab label='varplot'>
+        <mat-grid-list id=line-charts cols="1" gutterSize="0px" rowHeight="400px">
+            <mat-grid-tile id=chart [colspan]="1" [rowspan] ="1">
+                <app-varplot defaultX="temp" defaultY="pres" defaultZ="psal"></app-varplot>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
 </mat-tab-group>
 <app-table></app-table>
