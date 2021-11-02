@@ -23,6 +23,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public graph: any
   public symbols: any
   public tableSubscription: any
+  public activePlots: string[]
 
   constructor(private getProfileService: GetProfilesService,
               private queryProfviewService: QueryProfviewService,
@@ -30,6 +31,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.symbols = ['circle', 'square', 'diamond', 'triangle-up', 'x']
+    this.activePlots = []
 
     this.queryProfviewService.urlParsed.subscribe( (msg: string) => {
       this.platform_number = this.queryProfviewService.platform_number
@@ -51,11 +53,16 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     })
 
     this.tableSubscription = this.exchange.getData().subscribe(message => {
-      console.log(message);
-      //call you action which need to execute in this component on button clicked
+      if(message.checked){
+        // add plot
+        this.activePlots.indexOf(message.id) == -1 ? this.activePlots.push(message.id) : null;
+      } else{
+        // remove plot
+        this.activePlots = this.activePlots.filter(id => id !== message.id);
+      }
+      this.make_chart();
     });
   }
-
 
   ngAfterViewInit() {
     return
@@ -97,6 +104,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               marker: {color: p.bgcMeas.map(z => z[this.zAxis]), colorscale: 'Viridis'}
             }
           })
+      data = data.filter(d => this.activePlots.includes(d.name))
       // set marker shape 
       for(let i=0; i<data.length; i++){
         data[i].marker.symbol = this.symbols[i%this.symbols.length]
