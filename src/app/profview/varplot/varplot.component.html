@@ -24,6 +24,20 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
+
+        <mat-form-field>
+            <input matInput matTooltip="colorscale min"
+            class="minInput" placeholder="color min"
+            [(value)]="cmin" type="number" 
+            (change)="z_min_change($event.target.value)">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput matTooltip="colorscale max" 
+            class="maxInput" placeholder="color max"
+            [(value)]="cmax" type="number" 
+            (change)="z_max_change($event.target.value)">
+        </mat-form-field>
+
     </div>
 
     <plotly-plot *ngIf="graph" class='chart'

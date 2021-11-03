@@ -40,9 +40,15 @@
         </mat-grid-list>
     </mat-tab>
     <mat-tab label='varplot'>
-        <mat-grid-list id=line-charts cols="1" gutterSize="0px" rowHeight="400px">
-            <mat-grid-tile id=chart [colspan]="1" [rowspan] ="1">
+        <mat-grid-list id=varplots cols="3" gutterSize="0px" rowHeight="500px">
+            <mat-grid-tile id=chartA [colspan]="1" [rowspan]="1">
                 <app-varplot defaultX="temp" defaultY="pres" defaultZ="psal"></app-varplot>
+            </mat-grid-tile>
+            <mat-grid-tile id=chartB [colspan]="1" [rowspan]="1">
+                <app-varplot defaultX="time" defaultY="pres" defaultZ="doxy"></app-varplot>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <app-globe-scatter id="globe-scatter-chart"></app-globe-scatter>
             </mat-grid-tile>
         </mat-grid-list>
     </mat-tab>

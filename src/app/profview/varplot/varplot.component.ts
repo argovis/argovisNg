@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges} from '@angular/core';
 import { StationParameters } from '../profiles'
 import { GetProfilesService } from '../get-profiles.service'
 import { QueryProfviewService } from '../query-profview.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DataexchangeService } from "../dataexchange.service"
+import { NotifierService } from 'angular-notifier'
 
 @Component({
   selector: 'app-varplot',
@@ -19,6 +20,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public xAxis: string
   public yAxis: string
   public zAxis: string
+  public cmin: number
+  public cmax: number
   public statParams: StationParameters[]
   public graph: any
   public symbols: any
@@ -32,6 +35,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.symbols = ['circle', 'square', 'diamond', 'triangle-up', 'x']
     this.activePlots = []
+    this.cmin = 0
+    this.cmax = 1000
 
     this.queryProfviewService.urlParsed.subscribe( (msg: string) => {
       this.platform_number = this.queryProfviewService.platform_number
@@ -46,7 +51,6 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
       this.xAxis = this.choose_defaults(this.defaultX)
       this.yAxis = this.choose_defaults(this.defaultY)
       this.zAxis = this.choose_defaults(this.defaultZ)
-      this.make_chart()
     }, 
     error => {
       console.error('an error occured when listening to changeStatParams: ', error)
@@ -91,17 +95,31 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     this.make_chart()
   }
 
+  z_min_change(cmin: number): void {
+    this.cmin = cmin
+    this.make_chart()
+  }
+
+  z_max_change(cmax: number): void {
+    this.cmax = cmax
+    this.make_chart()
+  }
+
   make_chart(): void {
     this.getProfileService.get_platform_data(this.platform_number, [this.xAxis, this.yAxis, this.zAxis]).subscribe( (profileData: any) => {
       // pack data
       let data = profileData.map(p => {
+            let d = new Date(p.date)
             return {
               type: 'scatter', 
               mode: 'markers',
               name: p['_id'],
-              x: p.bgcMeas.map(x => x[this.xAxis]),
-              y: p.bgcMeas.map(y => y[this.yAxis]),
-              marker: {color: p.bgcMeas.map(z => z[this.zAxis]), colorscale: 'Viridis'}
+              x: this.xAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(x => x[this.xAxis]),
+              y: this.yAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(y => y[this.yAxis]),
+              marker: {color: this.zAxis=='time' ? Array(p.bgcMeas.length).fill(d.getTime()/1000) : p.bgcMeas.map(z => z[this.zAxis]),
+                       colorscale: 'Viridis',
+                       cmin: this.cmin,
+                       cmax: this.cmax}
             }
           })
       data = data.filter(d => this.activePlots.includes(d.name))
@@ -112,7 +130,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
       // update graph on change
       this.graph = {
         data: data,
-        layout: this.generate_layout()
+        layout: this.generate_layout(this.yAxis.includes('pres'))
       }
     },
     error => {
@@ -129,10 +147,10 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     else return variable
   }
 
-  generate_layout(): any {
+  generate_layout(reverseY: boolean): any {
     let layout = {
           height:300, 
-          width: 300,
+          width: 450,
           margin: {
             l: 5,
             r: 5,
@@ -141,9 +159,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
             pad: 5
           },
           yaxis: {
-              showticklabels: true,
-              autorange: true,
-              type: "linear", 
+              autorange: reverseY ? 'reversed' : true, 
               title: this.yAxis,
               automargin: true,
           },
@@ -153,8 +169,9 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               automargin: true,
           }, 
           hovermode: "closest", 
-          showlegend: true,
+          showlegend: true
         }
+
 
     return layout
   }

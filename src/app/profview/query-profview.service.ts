@@ -126,7 +126,7 @@ export class QueryProfviewService {
         })
       }
     })
-    let statParams = [] as StationParameters[]
+    let statParams = [{value: 'time', viewValue: 'time'}] as StationParameters[]
     uStatParam.forEach( (statParam: string) => {
         statParams.push({value: statParam, viewValue: statParam})
     })
