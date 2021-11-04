@@ -22,6 +22,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public zAxis: string
   public cmin: number
   public cmax: number
+  public suspendcmaxDetection: boolean
+  public suspendcminDetection: boolean
   public statParams: StationParameters[]
   public graph: any
   public symbols: any
@@ -97,32 +99,65 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
   z_min_change(cmin: number): void {
     this.cmin = cmin
+    this.suspendcminDetection = true
+    this.suspendcmaxDetection = true
     this.make_chart()
   }
 
   z_max_change(cmax: number): void {
     this.cmax = cmax
+    this.suspendcminDetection = true
+    this.suspendcmaxDetection = true
     this.make_chart()
   }
 
   make_chart(): void {
     this.getProfileService.get_platform_data(this.platform_number, [this.xAxis, this.yAxis, this.zAxis]).subscribe( (profileData: any) => {
+      // filter off anything we don't want to plot
+      let data = profileData.filter(d => this.activePlots.includes(d['_id']))
+      let minZ = []
+      let maxZ = []
       // pack data
-      let data = profileData.map(p => {
+      data = data.map(p => {
+            // pack color axis data, and use it to make sensible decisions on how to set the colorscale limits.
             let d = new Date(p.date)
+            let z = this.zAxis=='time' ? Array(p.bgcMeas.length).fill(d.getTime()/1000) : p.bgcMeas.map(z => z[this.zAxis])
+            if(!this.suspendcminDetection){
+              minZ.push(+(Math.min(...z.filter(zz => typeof zz === 'number' && isFinite(zz))).toFixed(2)))
+            }
+            if(!this.suspendcmaxDetection) {
+              maxZ.push(+(Math.max(...z.filter(zz => typeof zz === 'number' && isFinite(zz))).toFixed(2)))
+            }
             return {
               type: 'scatter', 
               mode: 'markers',
               name: p['_id'],
               x: this.xAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(x => x[this.xAxis]),
               y: this.yAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(y => y[this.yAxis]),
-              marker: {color: this.zAxis=='time' ? Array(p.bgcMeas.length).fill(d.getTime()/1000) : p.bgcMeas.map(z => z[this.zAxis]),
+              marker: {color: z,
                        colorscale: 'Viridis',
-                       cmin: this.cmin,
-                       cmax: this.cmax}
+                       title: this.zAxis
+                      }
             }
-          })
-      data = data.filter(d => this.activePlots.includes(d.name))
+      })
+      // append the colorscale calibration info based on global max/min across all profiles
+      if(!this.suspendcminDetection) this.cmin = Math.min(...minZ)
+      if(!this.suspendcmaxDetection) this.cmax = Math.max(...maxZ)
+      data = data.map( d => {
+        d.marker.cmin = this.cmin
+        d.marker.cmax = this.cmax
+        d.marker.colorbar = {thickness: 10, title: this.zAxis}
+        if(this.zAxis == 'time'){
+          d.marker.colorbar.tickmode = 'array'
+          d.marker.colorbar.tickvals = [this.cmin, (this.cmax - this.cmin)/2 + this.cmin, this.cmax]
+          d.marker.colorbar.ticktext = d.marker.colorbar.tickvals.map(time => new Date(time*1000).toISOString().split('T')[0])
+          d.marker.colorbar.tickangle = 30
+         }
+        return d
+      })
+
+      this.suspendcminDetection = false
+      this.suspendcmaxDetection = false
       // set marker shape 
       for(let i=0; i<data.length; i++){
         data[i].marker.symbol = this.symbols[i%this.symbols.length]
@@ -169,7 +204,11 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               automargin: true,
           }, 
           hovermode: "closest", 
-          showlegend: true
+          showlegend: true,
+          legend: {
+            x: 1.4,
+            y: 1
+          }
         }
 
 

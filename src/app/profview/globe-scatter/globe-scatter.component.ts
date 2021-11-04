@@ -48,7 +48,7 @@ export class GlobeScatterComponent implements OnInit {
     const minLong = Math.min(...longs)
     const maxLong = Math.max(...longs)
     const longRange = [minLong-5, maxLong+5]
-    const latRange = [Math.min(...lats)-5, Math.max(...lats)+5]
+    const latRange = [Math.min(...lats)-7, Math.max(...lats)+7]
 
     let hovorText = []
     for (let idx=0; idx<ids.length; ++idx){
@@ -79,7 +79,7 @@ export class GlobeScatterComponent implements OnInit {
     }];
 
     const layout = {
-        width:500,
+        width:200,
         titlefont: {
             size: 16
         },
