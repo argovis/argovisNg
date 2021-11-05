@@ -29,16 +29,20 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public symbols: any
   public tableSubscription: any
   public activePlots: string[]
+  public colorscales: string[]
+  public currentColor: string
 
   constructor(private getProfileService: GetProfilesService,
               private queryProfviewService: QueryProfviewService,
               public exchange: DataexchangeService) { }
 
   ngOnInit(): void {
-    this.symbols = ['circle', 'square', 'diamond', 'triangle-up', 'x']
+    this.symbols = ['circle', 'square', 'diamond', 'triangle-up', 'x', 'cross', 'pentagon', 'triangle-down', 'triangle-left', 'triangle-right']
     this.activePlots = []
     this.cmin = 0
     this.cmax = 1000
+    this.colorscales = ["Blackbody","Bluered","Blues","Earth","Electric","Greens","Greys","Hot","Jet","Picnic","Portland","Rainbow","RdBu","Reds","Viridis","YlGnBu","YlOrRd"]
+    this.currentColor = 'Viridis'
 
     this.queryProfviewService.urlParsed.subscribe( (msg: string) => {
       this.platform_number = this.queryProfviewService.platform_number
@@ -83,13 +87,6 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   y_change(y: string): void {
-    // reverse y axis iff plotting pressure
-    // if(y.includes('pres')) {
-    //   this.graph.layout.yaxis.autorange = 'reversed'
-    // } else {
-    //   this.graph.layout.yaxis.autorange = true
-    // }
-
     this.make_chart()
   }
 
@@ -109,6 +106,20 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     this.suspendcminDetection = true
     this.suspendcmaxDetection = true
     this.make_chart()
+  }
+
+  colorscale_change(colorscale: string): void {
+    this.currentColor = colorscale
+    this.suspendcminDetection = true
+    this.suspendcmaxDetection = true
+    this.make_chart()
+  }
+
+  on_select(event: any): void {
+    if(event.event.shiftKey){
+      const url = 'https://argovis.colorado.edu/catalog/profiles/' + event['points'][0]['data']['name'] + '/bgcPage'
+      window.open(url,'_blank')
+    }
   }
 
   make_chart(): void {
@@ -135,7 +146,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               x: this.xAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(x => x[this.xAxis]),
               y: this.yAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(y => y[this.yAxis]),
               marker: {color: z,
-                       colorscale: 'Viridis',
+                       colorscale: this.currentColor,
                        title: this.zAxis
                       }
             }
@@ -160,12 +171,16 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
       this.suspendcmaxDetection = false
       // set marker shape 
       for(let i=0; i<data.length; i++){
-        data[i].marker.symbol = this.symbols[i%this.symbols.length]
+        if(data.length <= 10){
+          data[i].marker.symbol = this.symbols[i%this.symbols.length]
+        } else {
+          data[i].marker.symbol = 'circle'
+        }
       }
       // update graph on change
       this.graph = {
         data: data,
-        layout: this.generate_layout(this.yAxis.includes('pres'))
+        layout: this.generate_layout(this.yAxis.includes('pres'), data.length <= 10)
       }
     },
     error => {
@@ -182,7 +197,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     else return variable
   }
 
-  generate_layout(reverseY: boolean): any {
+  generate_layout(reverseY: boolean, showlegend: boolean): any {
     let layout = {
           height:300, 
           width: 450,
@@ -204,7 +219,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               automargin: true,
           }, 
           hovermode: "closest", 
-          showlegend: true,
+          showlegend: showlegend,
           legend: {
             x: 1.4,
             y: 1
