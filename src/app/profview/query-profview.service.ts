@@ -126,7 +126,12 @@ export class QueryProfviewService {
         })
       }
     })
-    let statParams = [{value: 'time', viewValue: 'time'}] as StationParameters[]
+    let statParams = [
+      {value: 'time', viewValue: 'time'},
+      {value: 'latitude', viewValue: 'latitude'},
+      {value: 'longitude', viewValue: 'longitude'},
+      {value: 'profileID', viewValue: 'profileID'}
+    ] as StationParameters[]
     uStatParam.forEach( (statParam: string) => {
         statParams.push({value: statParam, viewValue: statParam})
     })

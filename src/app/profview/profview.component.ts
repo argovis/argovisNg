@@ -27,11 +27,10 @@ export class ProfviewComponent implements OnInit {
   }
 
   on_tab_click(index: number): void {
-    this.selectedIndex = index
-    this.queryProfviewService.selectedIndex = this.selectedIndex
-    console.log(this.queryProfviewService.selectedIndex)
-    this.queryProfviewService.set_url()
-    this.queryProfviewService.urlParsed.emit('tab changed in url')
+    // this.selectedIndex = index
+    // this.queryProfviewService.selectedIndex = this.selectedIndex
+    // this.queryProfviewService.set_url()
+    // this.queryProfviewService.urlParsed.emit('tab changed in url')
   }
 
 }

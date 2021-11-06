@@ -16,6 +16,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() defaultX: any
   @Input() defaultY: any
   @Input() defaultZ: any
+  @Input() width: any
   public platform_number: string
   public xAxis: string
   public yAxis: string
@@ -31,6 +32,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   public activePlots: string[]
   public colorscales: string[]
   public currentColor: string
+  public pidmap
+  public catIndex
 
   constructor(private getProfileService: GetProfilesService,
               private queryProfviewService: QueryProfviewService,
@@ -43,6 +46,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     this.cmax = 1000
     this.colorscales = ["Blackbody","Bluered","Blues","Earth","Electric","Greens","Greys","Hot","Jet","Picnic","Portland","Rainbow","RdBu","Reds","Viridis","YlGnBu","YlOrRd"]
     this.currentColor = 'Viridis'
+    this.pidmap = {}
+    this.catIndex = 0
 
     this.queryProfviewService.urlParsed.subscribe( (msg: string) => {
       this.platform_number = this.queryProfviewService.platform_number
@@ -126,13 +131,18 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     this.getProfileService.get_platform_data(this.platform_number, [this.xAxis, this.yAxis, this.zAxis]).subscribe( (profileData: any) => {
       // filter off anything we don't want to plot
       let data = profileData.filter(d => this.activePlots.includes(d['_id']))
+      
+      // get the map of pids if necessary
+      this.pidmap = {}
+      this.catIndex = 0
+      if(this.zAxis == 'profileID') profileData.map(d => this.create_pidmap(d['_id']))
+
+      // pack data
       let minZ = []
       let maxZ = []
-      // pack data
       data = data.map(p => {
             // pack color axis data, and use it to make sensible decisions on how to set the colorscale limits.
-            let d = new Date(p.date)
-            let z = this.zAxis=='time' ? Array(p.bgcMeas.length).fill(d.getTime()/1000) : p.bgcMeas.map(z => z[this.zAxis])
+            let z = this.pack_z(p)
             if(!this.suspendcminDetection){
               minZ.push(+(Math.min(...z.filter(zz => typeof zz === 'number' && isFinite(zz))).toFixed(2)))
             }
@@ -143,15 +153,17 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               type: 'scatter', 
               mode: 'markers',
               name: p['_id'],
-              x: this.xAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(x => x[this.xAxis]),
-              y: this.yAxis=='time' ? Array(p.bgcMeas.length).fill(p.date) : p.bgcMeas.map(y => y[this.yAxis]),
+              x: this.pack_xy(p, 'xAxis'),
+              y: this.pack_xy(p, 'yAxis'),
               marker: {color: z,
                        colorscale: this.currentColor,
                        title: this.zAxis
                       }
             }
       })
+
       // append the colorscale calibration info based on global max/min across all profiles
+      // also handle special z axes
       if(!this.suspendcminDetection) this.cmin = Math.min(...minZ)
       if(!this.suspendcmaxDetection) this.cmax = Math.max(...maxZ)
       data = data.map( d => {
@@ -163,6 +175,9 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
           d.marker.colorbar.tickvals = [this.cmin, (this.cmax - this.cmin)/2 + this.cmin, this.cmax]
           d.marker.colorbar.ticktext = d.marker.colorbar.tickvals.map(time => new Date(time*1000).toISOString().split('T')[0])
           d.marker.colorbar.tickangle = 30
+         }
+        if(this.zAxis == 'profileID'){
+          d.marker.colorbar = null
          }
         return d
       })
@@ -200,7 +215,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   generate_layout(reverseY: boolean, showlegend: boolean): any {
     let layout = {
           height:300, 
-          width: 450,
+          width: this.width,
           margin: {
             l: 5,
             r: 5,
@@ -228,6 +243,56 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
 
     return layout
+  }
+
+  pack_xy(p: any, axis: string){
+    // pack the data for the x or y axis meant to be used in the data.x or data.y keys of the plotly object.
+    // p == profile object as returned by getProfileService.get_platform_data
+    // axis == 'xAxis' or 'yAxis'.
+
+    if(this[axis] == 'time'){
+      return Array(p.bgcMeas.length).fill(p.date)
+    } else if (this[axis] == 'latitude'){
+      return Array(p.bgcMeas.length).fill(p.geoLocation.coordinates[1])
+    } else if (this[axis] == 'longitude'){
+      return Array(p.bgcMeas.length).fill(p.geoLocation.coordinates[0])
+    } else if (this[axis] == 'profileID'){
+      return Array(p.bgcMeas.length).fill(p._id)
+    } else {
+      // catchall for bgc variables
+      return p.bgcMeas.map(i => i[this[axis]])
+    }
+  }
+
+  pack_z(p: any){
+    // pack the data for the z axis meant to be used in the data.marker.color key of the plotly object.
+    // p == profile object as returned by getProfileService.get_platform_data
+
+    let d = new Date(p.date)
+
+    if(this.zAxis == 'time'){
+      return Array(p.bgcMeas.length).fill(d.getTime()/1000)
+    } else if (this.zAxis == 'latitude'){
+      return Array(p.bgcMeas.length).fill(p.geoLocation.coordinates[1])
+    } else if (this.zAxis == 'longitude'){
+      return Array(p.bgcMeas.length).fill(p.geoLocation.coordinates[0])
+    } else if (this.zAxis == 'profileID'){
+      return Array(p.bgcMeas.length).fill(this.pidmap[p._id])
+    } else {
+      // catchall for bgc variables
+      return p.bgcMeas.map(i => i[this.zAxis])
+    }
+  }
+
+  create_pidmap(id){
+    // when plotting profile IDs on the color axis, need to map pids onto a numerical index.
+    if(id in this.pidmap) return this.pidmap[id]
+      else {
+        this.pidmap[id] = this.catIndex
+        this.catIndex++
+        return this.pidmap[id]  
+      }
+
   }
 
 }
