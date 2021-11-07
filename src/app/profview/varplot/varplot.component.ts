@@ -141,7 +141,9 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
       let minZ = []
       let maxZ = []
       data = data.map(p => {
-            // pack color axis data, and use it to make sensible decisions on how to set the colorscale limits.
+            // pack data, and use it to make sensible decisions on how to set the colorscale limits.
+            let x = this.pack_xy(p, 'xAxis')
+            let y = this.pack_xy(p, 'yAxis')
             let z = this.pack_z(p)
             if(!this.suspendcminDetection){
               minZ.push(+(Math.min(...z.filter(zz => typeof zz === 'number' && isFinite(zz))).toFixed(2)))
@@ -153,8 +155,10 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
               type: 'scatter', 
               mode: 'markers',
               name: p['_id'],
-              x: this.pack_xy(p, 'xAxis'),
-              y: this.pack_xy(p, 'yAxis'),
+              text: this.generate_tooltip(p, x,y,z),
+              hoverinfo: 'text',
+              x: x,
+              y: y,
               marker: {color: z,
                        colorscale: this.currentColor,
                        title: this.zAxis
@@ -173,7 +177,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
         if(this.zAxis == 'time'){
           d.marker.colorbar.tickmode = 'array'
           d.marker.colorbar.tickvals = [this.cmin, (this.cmax - this.cmin)/2 + this.cmin, this.cmax]
-          d.marker.colorbar.ticktext = d.marker.colorbar.tickvals.map(time => new Date(time*1000).toISOString().split('T')[0])
+          d.marker.colorbar.ticktext = d.marker.colorbar.tickvals.map(time => new Date(time).toISOString().split('T')[0])
           d.marker.colorbar.tickangle = 30
          }
         if(this.zAxis == 'profileID'){
@@ -271,7 +275,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     let d = new Date(p.date)
 
     if(this.zAxis == 'time'){
-      return Array(p.bgcMeas.length).fill(d.getTime()/1000)
+      return Array(p.bgcMeas.length).fill(d.getTime())
     } else if (this.zAxis == 'latitude'){
       return Array(p.bgcMeas.length).fill(p.geoLocation.coordinates[1])
     } else if (this.zAxis == 'longitude'){
@@ -292,7 +296,28 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
         this.catIndex++
         return this.pidmap[id]  
       }
-
   }
 
+  generate_tooltip(p, x, y, z): string[] {
+    let data = x.map(function(d, i){
+      return [this.stringify_data(this.xAxis, d),
+              this.stringify_data(this.yAxis, y[i]),
+              this.stringify_data(this.zAxis, z[i])]
+    }, this)
+    let text = data.map(d => {
+      return "<b>Profile " + p._id + "</b><br>"
+    + this.xAxis + ": " + d[0] + "<br>"
+    + this.yAxis + ": " + d[1] + "<br>"
+    + this.zAxis + ": " + d[2] + "<br>"
+    + "Hold shift and click to open profile page."     
+    })
+
+    return text
+  }
+
+  stringify_data(variable, value){
+    if(variable == 'time') return new Date(value).toUTCString()
+    else if (typeof value == 'number') return value.toFixed(2)
+    else return value
+  }
 }
