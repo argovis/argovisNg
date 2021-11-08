@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core'
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core'
 import { ProfileMeta } from '../profiles'
 import { GetProfilesService } from '../get-profiles.service'
 import { QueryProfviewService } from '../query-profview.service'
@@ -13,7 +13,7 @@ import { DataexchangeService } from "../dataexchange.service"
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit, AfterViewInit {
+export class TableComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator
   @ViewChild(MatSort, {static: false}) sort: MatSort
   @ViewChildren ("profilechecks") tablecheck: QueryList<MatCheckboxModule>;
@@ -28,14 +28,6 @@ export class TableComponent implements OnInit, AfterViewInit {
   public platform_number: string
   public statParamKey: string
   public checkstate: any
-
-  ngAfterViewInit(): void {
-    // this.tablecheck.changes.subscribe(c => { 
-    //   console.log(c.first)
-    //   c.first.toggle()
-    // });
-  }
-
 
   ngOnInit(): void {
 
@@ -58,7 +50,10 @@ export class TableComponent implements OnInit, AfterViewInit {
 
       // plot the first thing in the list by default
       profileMeta.map( (x,i) => {
-        this.checkstate[x['_id']] = i==0}
+        if(i==0){
+          this.programmatic_plot(x['_id'], true)
+        }
+      }
       , this)
     },  
     error => {  
@@ -73,9 +68,12 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   toggleProfile(values: any): void {
-    this.checkstate[values.source.name] = values.checked
     this.exchange.sendData({id: values.source.name, checked: values.checked});
-    console.log(this.checkstate)
+  }
+
+  programmatic_plot(id, state) {
+    this.checkstate[id] = state
+    this.toggleProfile({source: {name: id}, checked: state})
   }
 
 }

@@ -43,9 +43,10 @@
     <ng-container matColumnDef="display">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Plot Profile </th>
         <td mat-cell *matCellDef="let element"> 
-            <mat-checkbox #profilechecks id={{element._id}} name={{element._id}} [(checked)]=checkstate[element._id] (change)="toggleProfile($event)"></mat-checkbox> 
+            <mat-checkbox #profilechecks id={{element._id}} name={{element._id}} [checked]=checkstate[element._id] (change)="toggleProfile($event)"></mat-checkbox> 
         </td>
     </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="metaColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: metaColumns;"></tr>
