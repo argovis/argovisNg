@@ -5,7 +5,6 @@ import { ProfviewComponent } from './profview.component';
 import { TableComponent } from './table/table.component';
 import { MaterialModule } from '../material/material.module';
 import { ColorChartComponent } from './color-chart/color-chart.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
@@ -23,7 +22,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     CommonModule,
     MaterialModule,
     PlotlyModule,
-    MatCheckboxModule,
     ReactiveFormsModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
