@@ -3,6 +3,7 @@
   <mat-form-field id=form-field>
         <input matInput (keyup)="apply_filter($event.target.value)" placeholder="Filter">
   </mat-form-field>
+
   <table mat-table matTableExporter [dataSource]="dataSource"  #exporter="matTableExporter" matSort>
     <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Link to GDAC data </th>
@@ -41,7 +42,9 @@
 
     <ng-container matColumnDef="display">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Plot Profile </th>
-        <td mat-cell *matCellDef="let element"> <input type="checkbox" id={{element._id}} name={{element._id}} (change)="toggleProfile($event)"> </td>
+        <td mat-cell *matCellDef="let element"> 
+            <mat-checkbox #profilechecks id={{element._id}} name={{element._id}} [(checked)]=checkstate[element._id] (change)="toggleProfile($event)"></mat-checkbox> 
+        </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="metaColumns; sticky: true"></tr>
