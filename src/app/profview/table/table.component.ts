@@ -46,13 +46,13 @@ export class TableComponent implements OnInit {
       this.dataSource.paginator = this.paginator
       this.dataSource.sort = this.sort
 
-      // plot the first thing in the list by default
+      // plot the first thing in the list by default, register everything else in checkstate
+      profileMeta.map(x => this.checkstate[x['_id']] = false, this)
       profileMeta.map( (x,i) => {
         if(i==0){
           this.programmatic_plot(x['_id'], true)
         }
-      }
-      , this)
+      }, this)
     },  
     error => {  
       console.log('There was an error while retrieving profiles metadata.',  error);  
@@ -66,12 +66,33 @@ export class TableComponent implements OnInit {
   }
 
   toggleProfile(values: any): void {
+    this.checkstate[values.currentTarget.id] = values.currentTarget.checked
     this.exchange.sendData({id: values.currentTarget.id, checked: values.currentTarget.checked});
+
+    // manage toggleAll switch
+    let all = <HTMLInputElement>document.getElementById("toggleAll")
+    if(Object.keys(this.checkstate).map(k => this.checkstate[k]).every(x=>x)) {
+      all.checked = true
+    }
+    else all.checked = false    
   }
 
-  programmatic_plot(id, state) {
-    this.checkstate[id] = state
-    this.toggleProfile({currentTarget: {id: id, checked: state}})
+  programmatic_plot(id, desiredstate) {
+    // id == profile ID, desired state == true for on, false for off
+    
+    // toggle profile
+    this.toggleProfile({currentTarget: {id: id, checked: desiredstate}})
   }
 
+
+  toggleAll(): void {
+    let allon = Object.keys(this.checkstate).map(k => this.checkstate[k]).every(x=>x)
+    if(allon){
+      // turn all off
+      Object.keys(this.checkstate).map(k => this.programmatic_plot(k, false), this)
+    } else {
+      // turn all on if not on already
+      Object.keys(this.checkstate).map(k => {if(!this.checkstate[k]) this.programmatic_plot(k, true)}, this)
+    }
+  }
 }
