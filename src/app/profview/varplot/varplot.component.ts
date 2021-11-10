@@ -2,7 +2,7 @@ import { Component, OnInit, Input, AfterViewInit, OnChanges} from '@angular/core
 import { StationParameters } from '../profiles'
 import { GetProfilesService } from '../get-profiles.service'
 import { QueryProfviewService } from '../query-profview.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DataexchangeService } from "../dataexchange.service"
 import { NotifierService } from 'angular-notifier'
 
