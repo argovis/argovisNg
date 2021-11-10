@@ -5,4 +5,4 @@
 sed -i "s|ARGOVIS_API_ROOT|$1|g" /usr/src/ng_argovis/dist/main*.js
 
 # start app
-pm2 start process.json --no-daemon
+./bin/www

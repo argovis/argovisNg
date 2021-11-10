@@ -1,8 +1,0 @@
-{
-    "apps": [
-        {
-            "name": "argo",
-            "script": "./bin/www"
-        }
-    ]
-}
