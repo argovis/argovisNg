@@ -1,6 +1,5 @@
 # base image - only rebuild when package.json changes or dep updates desired.
 FROM node:12.0 as base
-USER 1000:1000
 WORKDIR /usr/src/ng_argovis
 COPY package*.json ./
 RUN npm install && \
@@ -10,7 +9,10 @@ RUN npm install && \
 FROM base as head
 COPY . .
 RUN npm run ng-high-memory
-CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080
+RUN chown -R 1000830000:1000830000 /usr/src/ng_argovis
+USER 1000830000:1000830000
+#CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080
+CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://argovis-api-atoc-argovis-dev.apps.containers01.colorado.edu
 
 # test image - extends head with testing tools
 

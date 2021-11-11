@@ -2,6 +2,7 @@ version: '3'
 services:
   argo-express:
     image: argovis/argo-express:dev
+    user: 1000830000:1000830000
     restart: always
     ports: 
     - '3000:3000'
