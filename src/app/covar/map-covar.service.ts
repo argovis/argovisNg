@@ -11,6 +11,7 @@ import { Polygon, Point } from 'ol/geom.js'
 import GeoJSON from 'ol/format/GeoJSON.js';
 import Feature from 'ol/Feature.js';
 import { Vector as VectorSource } from 'ol/source.js'
+import { environment } from '../../environments/environment';
 
 import * as d3 from 'd3';
 
@@ -185,7 +186,7 @@ export class MapCovarService {
   }
 
   public getCovarPoints(url: string): Observable<CovarPoints> {
-    return this.http.get<CovarPoints>(url)
+    return this.http.get<CovarPoints>(url, {'headers': environment.apiHeaders})
   }
 
   public makeCovarPolygons(features: any, proj: string, dLat: number, dLong: number): VectorLayer {

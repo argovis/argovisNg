@@ -33,6 +33,7 @@ export class ProfPopupComponent {
   @Input() bgc: boolean
   @Input() deep: boolean
   @Input() unknownPos: boolean
+  @Input() dpRoot: string
   public introMsg = {}
 
   ngOnInit() {

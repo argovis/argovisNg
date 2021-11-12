@@ -1,0 +1,59 @@
+<div id="varplot" class="mat-elevation-z8">
+    <div class="fields">
+        <div>
+            <mat-form-field class="field">
+                <mat-select id="x-axis-select" placeholder="Parameter on x axis" matTooltip="select parameter"
+                 [(value)]="xAxis" (selectionChange)="x_change($event.value)">
+                  <mat-option *ngFor="let param of statParams" [value]="param.value">
+                    {{param.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="field">
+                <mat-select id="y-axis-select" placeholder="Parameter on y axis" matTooltip="select parameter"
+                 [(value)]="yAxis" (selectionChange)="y_change($event.value)">
+                  <mat-option *ngFor="let param of statParams" [value]="param.value">
+                    {{param.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="field">
+                <mat-select id="z-axis-select" placeholder="Parameter on z (color) axis" matTooltip="select parameter"
+                 [(value)]="zAxis" (selectionChange)="z_change($event.value)">
+                  <mat-option *ngFor="let param of statParams" [value]="param.value">
+                    {{param.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="field">
+                <input matInput matTooltip="colorscale min"
+                class="minInput" placeholder="color min"
+                [(value)]="cmin" type="number" 
+                (change)="z_min_change($event.target.value)">
+            </mat-form-field>
+            <mat-form-field class="field">
+                <input matInput matTooltip="colorscale max" 
+                class="maxInput" placeholder="color max"
+                [(value)]="cmax" type="number" 
+                (change)="z_max_change($event.target.value)">
+            </mat-form-field>
+            <mat-form-field class="field">
+                <mat-select id="color-select" placeholder="Colorscale" matTooltip="select colorscale"
+                 [(value)]="currentColor" (selectionChange)="colorscale_change($event.value)">
+                  <mat-option *ngFor="let color of colorscales" [value]="color">
+                    {{color}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+    </div>
+
+    <plotly-plot *ngIf="graph" class='chart'
+      [data]="graph.data"
+      [layout]="graph.layout"
+      (plotly_click)="on_select($event)">
+    </plotly-plot>
+</div>

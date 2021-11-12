@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { ArQueryService } from './../ar-query.service'
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-ar-shape-popup',
@@ -81,7 +82,7 @@ export class ArShapePopupComponent implements OnInit {
   }
 
   public go_to_shape_json(): void {
-    const windowURL = '/arShapes/findByID?_id=' + this.shape_id
+    const windowURL = environment.apiRoot + '/ar?_id=' + this.shape_id
     window.open(windowURL,"_blank")
   } 
 

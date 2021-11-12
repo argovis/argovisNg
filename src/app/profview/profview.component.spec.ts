@@ -4,6 +4,7 @@ import { ProfviewComponent } from './profview.component';
 import { QueryProfviewService } from './query-profview.service'
 import { HttpClient, HttpErrorResponse, HttpClientModule, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { NotifierService, NotifierModule } from 'angular-notifier';
 
 describe('ProfviewComponent', () => {
   let component: ProfviewComponent;
@@ -12,7 +13,7 @@ describe('ProfviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfviewComponent ],
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule, NotifierModule ],
       providers: [ 
         QueryProfviewService,
         HttpClientTestingModule, 
@@ -20,6 +21,7 @@ describe('ProfviewComponent', () => {
         HttpClient, 
         HttpClientModule, 
         HttpHandler, 
+        NotifierService
       ]
     })
     .compileComponents();

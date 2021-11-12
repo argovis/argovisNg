@@ -27,7 +27,7 @@ describe('CovarService', () => {
     const testProj = 'testProj'
     const forcastDays = 140
     const testLngLat = [25, 25]
-    const testDataUrl = '/covarGrid/25/25/140'
+    const testDataUrl = 'ARGOVIS_API_ROOT/covarGrid?lat=25&lon=25&forcastDays=140'
 
     service.set_map_state('proj', testProj)
     service.set_map_state('forcastDays', JSON.stringify(forcastDays))
