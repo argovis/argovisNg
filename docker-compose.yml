@@ -14,7 +14,7 @@ services:
     ports:
       - '127.0.0.1:27017:27017'
     volumes:
-       - /Users/billmills/argovis/argovis-tutorial/data/argovis/storage/mongodb:/data/db:Z # development
+       - /storage/mongodb:/data/db:Z # development
       #- /data/argovis/storage/mongodb:/data/db:Z # production
   api:
     image: argovis/argovis_api:dev
