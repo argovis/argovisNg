@@ -1,6 +1,7 @@
 import { DateRange } from './../../../typeings/daterange.d';
 import { TcQueryService } from './../tc-query.service';
 import { Component, OnInit, Input } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-buffer-popup-component',
@@ -39,7 +40,7 @@ export class BufferPopupComponentComponent implements OnInit {
   }
 
   public generate_url(goToPage: boolean): string {
-    let url = '/selection/profiles'
+    let url = environment.dpRoot + '/selection/profiles'
     if (goToPage) {
       url += '/page'
     }
@@ -51,7 +52,9 @@ export class BufferPopupComponentComponent implements OnInit {
     if (this.deepOnlyToggle) {
       url += '&deepOnly=true'
     }
-    url += '&shape='+JSON.stringify(this.transformedShape)
+    if(this.transformedShape) {
+      url += '&polygon='+JSON.stringify(this.transformedShape).slice(1,-1)
+    }
     return url 
   }
 
