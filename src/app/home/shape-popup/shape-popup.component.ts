@@ -63,7 +63,9 @@ export class ShapePopupComponent implements OnInit {
     if (this.deepOnlyToggle) {
       url += '&deepOnly=true'
     }
-    url += '&polygon='+JSON.stringify(this.transformedShape).slice(1,-1)
+    if(this.transformedShape) {
+      url += '&polygon='+JSON.stringify(this.transformedShape).slice(1,-1)
+    }
     return url 
   }
 
