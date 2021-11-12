@@ -20,6 +20,8 @@ import { GridComparePickerComponent } from './sidebar-nav-grid/grid-compare-pick
 import { GridColorPickerComponent } from './sidebar-nav-grid/grid-color-picker/grid-color-picker.component';
 import { ColorbarComponent } from './sidebar-nav-grid/colorbar/colorbar.component';
 import { DatePickerComponent } from './sidebar-nav-grid/date-picker/date-picker.component';
+import { MonthSubtrahendPickerComponent } from './sidebar-nav-grid/month-subtrahend-picker/month-subtrahend-picker.component';
+import { GridSubtrahendPickerComponent } from './sidebar-nav-grid/grid-subtrahend-picker/grid-subtrahend-picker.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { DatePickerComponent } from './sidebar-nav-grid/date-picker/date-picker.
     GridComparePickerComponent,
     GridColorPickerComponent,
     ColorbarComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    MonthSubtrahendPickerComponent,
+    GridSubtrahendPickerComponent
     ],
   providers: [
     QueryGridService,

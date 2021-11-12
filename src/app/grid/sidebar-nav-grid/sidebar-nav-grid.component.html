@@ -5,12 +5,24 @@
 <button mat-icon-button matTooltip="reset map to starting position and settings." (click)="resetToStart()" >
     <mat-icon aria-label="reset to starting view">restore_page</mat-icon>
   </button>
+<mat-slide-toggle matTooltip="toggle on to subtract another grid"
+  color="accent" [checked]="compareMode"
+  (change)="compareModeToggle()"> Compare Mode
+</mat-slide-toggle>
 
-<app-grid-compare-picker class="grid-picker-form"></app-grid-compare-picker>
 <app-grid-picker class="grid-form" [paramMode]="paramMode"></app-grid-picker>
+<app-grid-subtrahend-picker class="grid-form" [paramMode]="paramMode"
+[hidden]="!compareMode"> </app-grid-subtrahend-picker>
 <app-month-picker *ngIf="monthPicker" class="date-form"
   [hidden]="paramMode">
 </app-month-picker>
+
+<app-month-subtrahend-picker *ngIf="monthPicker" class="date-form"
+  [hidden]="!compareMode">
+</app-month-subtrahend-picker>
+
+
+
 <app-pres-sel class="pres-form">
 </app-pres-sel>
 <app-date-picker *ngIf="!monthPicker" class="date-form"
@@ -21,7 +33,7 @@
 
   <!--<mat-slide-toggle matTooltip="toggle on to display grid globally"
                    color="accent" [checked]="interpolateBool"
-                   (change)="interpolateBoolToggle($event.checked)">Interpolate Grid 
+                   (change)="interpolateBoolToggle($event.checked)">Interpolate Grid
   </mat-slide-toggle>
   <mat-slide-toggle matTooltip="toggle on to display grid parameters"
   color="accent" [checked]="paramMode"
