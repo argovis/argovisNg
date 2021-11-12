@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
 import { WasmService } from './wasm.service'
 import { mockRaster, mockParamRaster, mockGrid } from './grid.items'
+import { environment } from '../../environments/environment';
 import * as L from "leaflet";
 //leaflet.canvaslayer.field.js depends on d3 and chroma scripts set in angular.json.
 
@@ -45,34 +46,33 @@ export class RasterService extends GridService {
 
   public getNonUniformGrid( date: string, latRange: number[], lonRange: number[], pres: number,
     gridName: string): Observable<Grid[]> {
-    let url = ''
-    url += '/griddedProducts/nonUniformGrid/window?'
-    url += 'latRange=' + JSON.stringify(latRange)
-    url += '&lonRange=' + JSON.stringify(lonRange)
-    url += '&presLevel=' + JSON.stringify(pres)
-    url += '&date=' + date
+    let d = new Date(date)
+    let url = environment.apiRoot + '/griddedProducts/nonUniformGrid/window?'
+    url += 'latRange=' + latRange[0] + ',' + latRange[1]
+    url += '&lonRange=' + lonRange[0] + ',' + lonRange[1]
+    url += '&presLevel=' + pres
+    url += '&date=' + d.toISOString()
     url += '&gridName=' + gridName
-    return this.http.get<Grid[]>(url)
+    return this.http.get<Grid[]>(url, {'headers': environment.apiHeaders})
     }
 
   public getGridCoords( latRange: number[], lonRange: number[], gridName: string): Observable<GridCoords[]> {
-    let url = '/griddedProducts/gridCoords?'
-    url += 'latRange=' + JSON.stringify(latRange)
-    url += '&lonRange=' + JSON.stringify(lonRange)
+    let url = environment.apiRoot + '/griddedProducts/gridCoords?'
+    url += 'latRange=' + latRange[0] + ',' + latRange[1]
+    url += '&lonRange=' + lonRange[0] + ',' + lonRange[1]
     url += '&gridName=' + gridName
-    return this.http.get<GridCoords[]>(url) 
+    return this.http.get<GridCoords[]>(url, {'headers': environment.apiHeaders}) 
   }
 
   public getParamRaster(latRange: number[], lonRange: number[], pres: number,
                        gridName: string, gridParam: string): Observable<RasterParam[]> {
-    let url = ''
-    url += '/griddedProducts/gridParams/window?'
-    url += 'latRange=' + JSON.stringify(latRange)
-    url += '&lonRange=' + JSON.stringify(lonRange)
-    url += '&presLevel=' + JSON.stringify(pres)
+    let url = environment.apiRoot + '/griddedProducts/gridParams/window?'
+    url += 'latRange=' + latRange[0] + ',' + latRange[1]
+    url += '&lonRange=' + lonRange[0] + ',' + lonRange[1]
+    url += '&presLevel=' + pres
     url += '&gridName=' + gridName
     url += '&param=' + gridParam
-    return this.http.get<RasterParam[]>(url)
+    return this.http.get<RasterParam[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getTwoParamRaster(latRange: number[], lonRange: number[], pres: number,
@@ -85,14 +85,15 @@ export class RasterService extends GridService {
 
   public getGridRaster(latRange: number[], lonRange: number[], date: string,
                        pres: number, gridName: string): Observable<RasterGrid[]> {
-    let url = ''
+    let d = new Date(date)
+    let url = environment.apiRoot
     url += '/griddedProducts/grid/window?'
-    url += 'latRange=' + JSON.stringify(latRange)
-    url += '&lonRange=' + JSON.stringify(lonRange)
+    url += 'latRange=' + latRange[0] + ',' + latRange[1]
+    url += '&lonRange=' + lonRange[0] + ',' + lonRange[1]
     url += '&gridName=' + gridName
-    url += '&date=' + date
-    url += '&presLevel=' + JSON.stringify(pres)
-    return this.http.get<RasterGrid[]>(url)
+    url += '&date=' + d.toISOString()
+    url += '&presLevel=' + pres
+    return this.http.get<RasterGrid[]>(url, {'headers': environment.apiHeaders})
   }
 
   public getTwoGridRasterProfiles(latRange: number[], lonRange: number[],

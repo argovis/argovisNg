@@ -35,7 +35,7 @@ describe('ShapePopupComponent', () => {
     expect(url.includes('/page')).toEqual(false)
     url = component['generate_url'](true)
     expect(url.includes('/page')).toEqual(true)
-    expect(url.includes('&presRange=[0,2000]')).toEqual(true)
+    expect(url.includes('&presRange=0,2000')).toEqual(true)
     expect(url.includes('&bgcOnly=true')).toEqual(false)
     expect(url.includes('&deepOnly=true')).toEqual(false)
 
@@ -43,7 +43,7 @@ describe('ShapePopupComponent', () => {
     component['bgc_only_change'](true)
     component['deep_only_change'](true)
     url = component['generate_url'](true)
-    expect(url.includes('&presRange=[0,2000]')).toEqual(false)
+    expect(url.includes('&presRange=0,2000')).toEqual(false)
     expect(url.includes('&bgcOnly=true')).toEqual(true)
     expect(url.includes('&deepOnly=true')).toEqual(true)
   })

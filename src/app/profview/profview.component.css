@@ -6,6 +6,10 @@
     height: 550px;
     width: 1250px;
 }
+#varplots {
+    width: 100vw;
+    min-width: 1440px;
+}
 .disclaimer {
     color: red;
 }

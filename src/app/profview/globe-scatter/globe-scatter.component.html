@@ -1,10 +1,9 @@
 <div id=globe-chart class="mat-elevation-z8">
-<h5 align="center"> Profile Location</h5>
-<plotly-plot *ngIf="graph" class='chart'
-[data]="graph.data"
-[layout]="graph.layout"
-[updateOnlyWithRevision]="graph.updateOnlyWithRevision"
-[revision]="revision"
-(plotly_click)="on_select($event.points[0]['text'])">
-</plotly-plot>
+	<plotly-plot *ngIf="graph" class='chart'
+	[data]="graph.data"
+	[layout]="graph.layout"
+	[updateOnlyWithRevision]="graph.updateOnlyWithRevision"
+	[revision]="revision"
+	(plotly_click)="on_select($event.points[0]['text'])">
+	</plotly-plot>
 </div>

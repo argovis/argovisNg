@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QueryProfviewService } from '../query-profview.service';
 import { ProfileMeta } from '../profiles'
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-globe-scatter',
   templateUrl: './globe-scatter.component.html',
@@ -40,15 +42,15 @@ export class GlobeScatterComponent implements OnInit {
   public on_select(text: string) {
     console.log('text', text)
     const profile_id = text.split('id: ').pop().split('<br>')[0]
-    const url = '/catalog/profiles/' + profile_id + '/bgcPage';
+    const url = environment.dpRoot + '/catalog/profiles/' + profile_id + '/bgcPage';
     window.open(url,'_blank');
   }
 
   private make_map(ids, lats, longs, dates, cycles, qcs) {
     const minLong = Math.min(...longs)
     const maxLong = Math.max(...longs)
-    const longRange = [minLong-5, maxLong+5]
-    const latRange = [Math.min(...lats)-5, Math.max(...lats)+5]
+    const longRange = [minLong-12, maxLong+12]
+    const latRange = [Math.min(...lats)-7, Math.max(...lats)+7]
 
     let hovorText = []
     for (let idx=0; idx<ids.length; ++idx){
@@ -79,7 +81,7 @@ export class GlobeScatterComponent implements OnInit {
     }];
 
     const layout = {
-        width:500,
+        width:600,
         titlefont: {
             size: 16
         },

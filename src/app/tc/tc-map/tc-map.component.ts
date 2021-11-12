@@ -206,7 +206,6 @@ export class TcMapComponent extends MapComponent implements OnInit {
     let shapeArrays = this.tcQueryService.get_shapes()
     if (shapeArrays) {
       this.markersLayer.clearLayers()
-      let base = '/selection/profiles/map'
       const daterange = this.tcQueryService.get_selection_dates()
       const presRange = this.tcQueryService.get_pres_range() as [number, number]
 

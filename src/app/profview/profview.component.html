@@ -1,43 +1,20 @@
-<h5 class="disclaimer">Beta Product: Still in development!</h5>
-<app-platform-window></app-platform-window>
-<mat-tab-group (selectedTabChange)="on_tab_click($event.index)" [selectedIndex]="selectedIndex">
-    <mat-tab label="Color charts">
-        <mat-grid-list id=color-charts cols="5" gutterSize="0px" rowHeight="300px">
-            <mat-grid-tile id=chart
-            [colspan]="3"
-            [rowspan] ="1">
-                <app-color-chart id="topChart"></app-color-chart>
-            </mat-grid-tile>
-            <mat-grid-tile
-            [colspan]="2"
-            [rowspan]="2">
-                <app-globe-scatter id="globe-scatter-chart"></app-globe-scatter>
-            </mat-grid-tile>
-            <mat-grid-tile id=chart
-            [colspan]="3"
-            [rowspan] ="1">
-                <app-color-chart id="bottomChart"></app-color-chart>
-            </mat-grid-tile>
-        </mat-grid-list>
-    </mat-tab>
-    <mat-tab label="Line charts">
-        <mat-grid-list id=line-charts cols="3" gutterSize="0px" rowHeight="400px">
-            <mat-grid-tile id=chart
-            [colspan]="1"
-            [rowspan] ="1">
-                <app-line-chart id="leftChart"></app-line-chart>
-            </mat-grid-tile>
-            <mat-grid-tile
-            [colspan]="1"
-            [rowspan]="1">
-                <app-line-chart id="middleChart"></app-line-chart>
-            </mat-grid-tile>
-            <mat-grid-tile id=chart
-            [colspan]="1"
-            [rowspan] ="1">
-                <app-line-chart id="rightChart"></app-line-chart>
-            </mat-grid-tile>
-        </mat-grid-list>
-    </mat-tab>
-</mat-tab-group>
-<app-table></app-table>
+<mat-grid-list id=varplots cols="12" gutterSize="0px" rowHeight="500px">
+    <mat-grid-tile id=chartA [colspan]="6" [rowspan]="1">
+        <app-varplot defaultX="temp" defaultY="pres" defaultZ="psal" width=600></app-varplot>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="6" [rowspan]="1">
+        <app-globe-scatter id="globe-scatter-chart"></app-globe-scatter>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-grid-list id=varplots cols="12" gutterSize="0px" rowHeight="500px">
+    <mat-grid-tile id=chartB [colspan]="12" [rowspan]="1">
+        <app-varplot defaultX="time" defaultY="pres" defaultZ="doxy" width=1200></app-varplot>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-grid-list id=varplots cols="12" gutterSize="0px" rowHeight="500px">
+    <mat-grid-tile id="prof-table" [colspan]="12" [rowspan]="1">
+        <app-table></app-table>
+    </mat-grid-tile>
+</mat-grid-list>
