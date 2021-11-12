@@ -102,7 +102,6 @@ export class PointsService {
   }
 
   public get_selection_points(daterange: DateRange, transformedShape: number[][][], presRange?: [number, number]): Observable<ProfilePoints[]> {
-    let base = '/selection/profiles/map'
     let url = environment.apiRoot + '/profiles?startDate=' + daterange.startDate + '&endDate=' + daterange.endDate + '&polygon=' + JSON.stringify(transformedShape[0])
     if (presRange) { url += '&presRange=' + presRange[0] + ',' + presRange[1] }
     return this.http.get<ProfilePoints[]>(url, {'headers': environment.apiHeaders});

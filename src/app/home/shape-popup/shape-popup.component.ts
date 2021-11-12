@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { QueryService } from '../services/query.service'
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-shape-popup',
@@ -46,7 +47,7 @@ export class ShapePopupComponent implements OnInit {
   }
 
   public generate_url(goToPage: boolean): string {
-    let url = '/selection/profiles'
+    let url = environment.dpRoot + '/selection/profiles'
     if (goToPage) {
       url += '/page'
     }
@@ -54,7 +55,7 @@ export class ShapePopupComponent implements OnInit {
     url += '?startDate=' + dates.startDate + '&endDate=' + dates.endDate
     if (this.presRangeToggle) {
       const presRange = this.queryService.get_pres_range();
-      url += '&presRange='+JSON.stringify(presRange)
+      url += '&presRange='+presRange[0] + ',' + presRange[1]
     }
     if (this.bgcOnlyToggle) {
       url += '&bgcOnly=true'
@@ -62,7 +63,7 @@ export class ShapePopupComponent implements OnInit {
     if (this.deepOnlyToggle) {
       url += '&deepOnly=true'
     }
-    url += '&shape='+JSON.stringify(this.transformedShape)
+    url += '&polygon='+JSON.stringify(this.transformedShape).slice(1,-1)
     return url 
   }
 
