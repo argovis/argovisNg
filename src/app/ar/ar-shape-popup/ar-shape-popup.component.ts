@@ -48,7 +48,7 @@ export class ArShapePopupComponent implements OnInit {
   }
 
   public generate_url(goToPage: boolean): string {
-    let url = '/selection/profiles'
+    let url = environment.dpRoot + '/selection/profiles'
     if (goToPage) {
       url += '/page'
     }
@@ -60,7 +60,9 @@ export class ArShapePopupComponent implements OnInit {
     if (this.deepOnlyToggle) {
       url += '&deepOnly=true'
     }
-    url += '&shape='+JSON.stringify(this.transformedShape)
+    if(this.transformedShape) {
+      url += '&polygon='+JSON.stringify(this.transformedShape).slice(1,-1)
+    }
     return url 
   }
 
