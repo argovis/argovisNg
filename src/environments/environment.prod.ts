@@ -5,5 +5,6 @@ const headers = new HttpHeaders()
 export const environment = {
   production: true,
   apiRoot: 'ARGOVIS_API_ROOT',
+  dpRoot: 'ARGOVIS_DP_ROOT',
   apiHeaders: headers
 };

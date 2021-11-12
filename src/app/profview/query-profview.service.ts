@@ -4,6 +4,7 @@ import { ProfileMeta, StationParameters } from './profiles'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { environment } from '../../environments/environment';
 
 export interface ChartItems{
   x1: string,
@@ -37,7 +38,7 @@ export class QueryProfviewService {
 
   // Virtual fields for table
   public make_profile_link (_id: string): string {
-    return '/catalog/profiles/' + _id + '/bgcPage';
+    return environment.dpRoot + '/catalog/profiles/' + _id + '/bgcPage';
   }
 
   public sendProfileMeta(profileMeta: ProfileMeta[]): void {

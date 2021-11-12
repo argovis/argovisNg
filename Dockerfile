@@ -2,8 +2,7 @@
 FROM node:12.0 as base
 WORKDIR /usr/src/ng_argovis
 COPY package*.json ./
-RUN npm install && \
-    npm install @angular/cli@9.1.0
+RUN npm install && npm install @angular/cli@9.1.0 -g
 
 # code head image - build as release candidate
 FROM base as head
@@ -11,8 +10,8 @@ COPY . .
 RUN npm run ng-high-memory
 RUN chown -R 1000830000:1000830000 /usr/src/ng_argovis
 USER 1000830000:1000830000
-#CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080
-CMD bash /usr/src/ng_argovis/docker-entrypoint.sh http://argovis-api-atoc-argovis-dev.apps.containers01.colorado.edu
+ENTRYPOINT bash /usr/src/ng_argovis/docker-entrypoint.sh http://127.0.0.1:8080 http://127.0.0.1:3030 
+#ENTRYPOINT bash /usr/src/ng_argovis/docker-entrypoint.sh http://argovis-api-atoc-argovis-dev.apps.containers01.colorado.edu
 
 # test image - extends head with testing tools
 

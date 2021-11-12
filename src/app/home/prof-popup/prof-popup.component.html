@@ -5,9 +5,9 @@
   <br />cycle: {{cycle}}
   <br />date: {{date}}
   <br />data mode: {{dataMode}}
-  <br *ngIf="showBGC===false" /><a href='/catalog/profiles/{{profileId}}/page' target='_blank' *ngIf="showBGC===false"> To profile page</a>
-  <br *ngIf="showBGC===false" /><a href='/catalog/platforms/{{platform}}/page' target='_blank' *ngIf="showBGC===false">To platform page</a>
-  <br *ngIf="showBGC" /><a href='/catalog/profiles/{{profileId}}/bgcPage' target='_blank' *ngIf="showBGC" class="bgc">To bgc profile page</a>
+  <br *ngIf="showBGC===false" /><a href='{{dpRoot}}/catalog/profiles/{{profileId}}/page' target='_blank' *ngIf="showBGC===false"> To profile page</a>
+  <br *ngIf="showBGC===false" /><a href='{{dpRoot}}/catalog/platforms/{{platform}}/page' target='_blank' *ngIf="showBGC===false">To platform page</a>
+  <br *ngIf="showBGC" /><a href='{{dpRoot}}/catalog/profiles/{{profileId}}/bgcPage' target='_blank' *ngIf="showBGC" class="bgc">To bgc profile page</a>
   <br *ngIf="showBGC" /><a href='/ng/profview?platform_number={{platform}}' target='_blank' *ngIf="showBGC" class="bgc">To bgc platform page (beta)</a>
   <br /><button matTooltip="Click to show where this platform has been" mat-raised-button color="primary" (click)="showPlatformsProfiles()" >Position history</button>
 </p>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QueryProfviewService } from '../query-profview.service';
 import { ProfileMeta } from '../profiles'
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-globe-scatter',
   templateUrl: './globe-scatter.component.html',
@@ -40,7 +42,7 @@ export class GlobeScatterComponent implements OnInit {
   public on_select(text: string) {
     console.log('text', text)
     const profile_id = text.split('id: ').pop().split('<br>')[0]
-    const url = '/catalog/profiles/' + profile_id + '/bgcPage';
+    const url = environment.dpRoot + '/catalog/profiles/' + profile_id + '/bgcPage';
     window.open(url,'_blank');
   }
 

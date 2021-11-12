@@ -5,6 +5,7 @@ import { QueryProfviewService } from '../query-profview.service';
 import { Subscription } from 'rxjs';
 import { DataexchangeService } from "../dataexchange.service"
 import { NotifierService } from 'angular-notifier'
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-varplot',
@@ -122,7 +123,7 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
   on_select(event: any): void {
     if(event.event.shiftKey){
-      const url = 'https://argovis.colorado.edu/catalog/profiles/' + event['points'][0]['data']['name'] + '/bgcPage'
+      const url = environment.dpRoot + '/catalog/profiles/' + event['points'][0]['data']['name'] + '/bgcPage'
       window.open(url,'_blank')
     }
   }

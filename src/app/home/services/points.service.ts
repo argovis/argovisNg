@@ -220,6 +220,7 @@ export class PointsService {
                     c.instance.bgc = bgc
                     c.instance.deep = deep
                     c.instance.unknownPos = unknownPos
+                    c.instance.dpRoot = environment.dpRoot
                   })
             );
 });

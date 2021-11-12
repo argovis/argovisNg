@@ -8,6 +8,7 @@ const headers = new HttpHeaders()
 
 export const environment = {
   production: false,
-  apiRoot: 'http://127.0.0.1:8080',
+  apiRoot: 'ARGOVIS_API_ROOT',
+  dpRoot: 'ARGOVIS_DP_ROOT',
   apiHeaders: headers
 };
