@@ -11,7 +11,6 @@ RUN npm run ng-high-memory
 RUN chown -R 1000830000:1000830000 /usr/src/ng_argovis
 USER 1000830000:1000830000
 ENTRYPOINT bash /usr/src/ng_argovis/docker-entrypoint.sh
-#ENTRYPOINT bash /usr/src/ng_argovis/docker-entrypoint.sh
 
 # test image - extends head with testing tools
 
