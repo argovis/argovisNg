@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 const headers = new HttpHeaders()
-  .set('X-argokey', 'xxx')
+  .set('X-argokey', 'ARGOVIS_API_KEY')
 
 export const environment = {
   production: true,
