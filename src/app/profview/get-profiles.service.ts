@@ -48,8 +48,7 @@ export class GetProfilesService {
   public get_platform_data(platform: string, meas: string[]): Observable<BgcProfileData[]> {
     let drops = ['time', 'latitude', 'longitude', 'profileID'] // remove these from BGC measurements to request, if present
     meas = meas.filter( ( el ) => !drops.includes( el ) );
-
-    while(meas.includes('time')) meas.splice(meas.indexOf('time'), 1) 
+    if(meas.length == 0) meas = ['pres'] // need to get at least one variable so we know number of levels
     let url = environment.apiRoot + '/profiles?platforms=' + platform + '&bgcMeasurements=' + meas.join(',')
     return this.http.get<BgcProfileData[]>(url, {'headers': environment.apiHeaders})
   }
