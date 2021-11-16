@@ -1,6 +1,6 @@
 <mat-grid-list id=varplots cols="12" gutterSize="0px" rowHeight="500px">
     <mat-grid-tile id=chartA [colspan]="6" [rowspan]="1">
-        <app-varplot tag="plotA" defaultX="temp" defaultY="pres" defaultZ="psal" width=600></app-varplot>
+        <app-varplot tag="A" width=600></app-varplot>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="6" [rowspan]="1">
         <app-globe-scatter id="globe-scatter-chart"></app-globe-scatter>
@@ -9,7 +9,7 @@
 
 <mat-grid-list id=varplots cols="12" gutterSize="0px" rowHeight="500px">
     <mat-grid-tile id=chartB [colspan]="12" [rowspan]="1">
-        <app-varplot tag="plotB" defaultX="time" defaultY="pres" defaultZ="doxy" width=1200></app-varplot>
+        <app-varplot tag="B" width=1200></app-varplot>
     </mat-grid-tile>
 </mat-grid-list>
 
