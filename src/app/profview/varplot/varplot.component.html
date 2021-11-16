@@ -54,6 +54,7 @@
     <plotly-plot *ngIf="graph" class='chart'
       [data]="graph.data"
       [layout]="graph.layout"
+      [config]="graph.config"
       (plotly_click)="on_select($event)">
     </plotly-plot>
 </div>
