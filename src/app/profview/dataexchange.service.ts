@@ -1,3 +1,4 @@
+//service to send data from table to varplot components
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';

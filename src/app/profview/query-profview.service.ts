@@ -31,6 +31,7 @@ export class QueryProfviewService {
   public measKey: string = 'bgcMeas'
   public profileMeta:  ProfileMeta[]
   public selectedIndex: number = 0
+  public state: any = {A: {}, B: {}}
 
   constructor(private route: ActivatedRoute,
               private getProfileService: GetProfilesService,
@@ -190,17 +191,22 @@ export class QueryProfviewService {
 
   public set_url(): void {
 
-    console.log('setting selected index in url to ', this.selectedIndex)
-
     const queryParams = {
                          'platform_number': this.platform_number,
-                         'topChart': this.topChart, 
-                         'bottomChart': this.bottomChart,
-                         'leftChart': JSON.stringify(this.leftChart),
-                         'middleChart': JSON.stringify(this.middleChart),
-                         'rightChart': JSON.stringify(this.rightChart),
-                         'bgcPlatform': JSON.stringify(this.bgcPlatform),
-                         'selectedIndex': JSON.stringify(this.selectedIndex)
+                         'profiles': this.state.profiles,
+                         'xA': this.state.A['x'], 
+                         'yA': this.state.A['y'], 
+                         'zA': this.state.A['z'],
+                         'cminA': this.state.A['cmin'],
+                         'cmaxA': this.state.A['cmax'],
+                         'currentColorA': this.state.A['currentColor'],
+                         'xB': this.state.B['x'], 
+                         'yB': this.state.B['y'], 
+                         'zB': this.state.B['z'],
+                         'cminB': this.state.B['cmin'],
+                         'cmaxB': this.state.B['cmax'],
+                         'currentColorB': this.state.B['currentColor']
+                         
                         }
     this.router.navigate(
       [], 
@@ -211,53 +217,11 @@ export class QueryProfviewService {
       });
   }
 
+
   public set_map_state(this, key: string, value: string): void {
-    switch(key) {
-      case 'platform_number': {
-        this.platform_number = value
-        break
-      }
-      case 'topChart': {
-        this.topChart = value
-        break
-      }
-      case 'bottomChart': {
-        this.bottomChart = value
-        break
-      }
-      case 'leftChart': {
-        this.leftChart = JSON.parse(value)
-        break
-      }
-      case 'middleChart': {
-        this.middleChart = JSON.parse(value)
-        break
-      }
-      case 'rightChart': {
-        this.rightChart = JSON.parse(value)
-        break
-      }
-      case 'selectedIndex': {
-        this.selectedIndex = JSON.parse(value)
-        break
-      }
-      case 'bgcPlatform': {
-        const bgcPlatform = JSON.parse(value)
-        this.bgcPlatform = bgcPlatform
-        if (!bgcPlatform) {
-          this.statParamsKey = 'measurements'
-          this.measKey = 'station_parameters'
-        }
-        else{
-          this.statParamsKey = 'bgcMeasKeys'
-          this.measKey = 'bgcMeas'
-        }
-        break
-      }
-      default: {
-        console.log('key not found. not doing anything: ', key)
-        break;
-      }
-    }
+    if(key == 'platform_number') this.platform_number = value
+    else if (key == 'profiles') this.state.profiles = value
+    else if(key.slice(-1) == 'A') this.state.A[key.slice(0,-1)] = value
+    else if(key.slice(-1) == 'B') this.state.B[key.slice(0,-1)] = value
   }
 }

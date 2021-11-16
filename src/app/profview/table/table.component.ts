@@ -49,7 +49,8 @@ export class TableComponent implements OnInit {
       // plot the first thing in the list by default, register everything else in checkstate
       profileMeta.map(x => this.checkstate[x['_id']] = false, this)
       profileMeta.map( (x,i) => {
-        if(i==0){
+        let plots = this.queryProfviewService.state.profiles ? this.queryProfviewService.state.profiles.split(',') : []
+        if(plots.includes(x['_id']) || (plots.length==0 && i==0)){
           this.programmatic_plot(x['_id'], true)
         }
       }, this)
