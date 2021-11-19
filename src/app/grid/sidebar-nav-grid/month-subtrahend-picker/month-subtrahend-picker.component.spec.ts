@@ -14,7 +14,7 @@ import * as moment from 'moment'
 
 describe('MonthSubtrahendPickerComponent', () => {
   let component: MonthSubtrahendPickerComponent;
-  let fixture: ComponentFixture<MonthSubrahendPickerComponent>;
+  let fixture: ComponentFixture<MonthSubtrahendPickerComponent>;
   let debugElement: DebugElement;
   let queryGridService: QueryGridService;
   let spyGetDate: jasmine.Spy;
