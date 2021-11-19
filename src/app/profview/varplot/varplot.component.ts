@@ -14,10 +14,8 @@ import { environment } from '../../../environments/environment';
 })
 export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() defaultX: any
-  @Input() defaultY: any
-  @Input() defaultZ: any
   @Input() width: any
+  @Input() tag: any
   public platform_number: string
   public xAxis: string
   public yAxis: string
@@ -52,6 +50,25 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.queryProfviewService.urlParsed.subscribe( (msg: string) => {
       this.platform_number = this.queryProfviewService.platform_number
+      // check URL for state variables and populate; 
+      //only x,y,z for each graph is mandatory, everything else can be autodetected if absent.
+      if(this.queryProfviewService.state.profiles) this.activePlots = this.queryProfviewService.state.profiles.split(',')
+      this.xAxis = this.queryProfviewService.state[this.tag]['x']
+      this.yAxis = this.queryProfviewService.state[this.tag]['y']
+      this.zAxis = this.queryProfviewService.state[this.tag]['z']
+      if(this.queryProfviewService.state[this.tag]['cmin']){
+        this.cmin = Number(this.queryProfviewService.state[this.tag]['cmin'])
+        this.suspendcminDetection = true
+      }
+      if(this.queryProfviewService.state[this.tag]['cmax']){
+        this.cmax = Number(this.queryProfviewService.state[this.tag]['cmax'])
+        this.suspendcmaxDetection = true
+      }
+      if(this.queryProfviewService.state[this.tag]['currentColor']){
+        this.currentColor = this.queryProfviewService.state[this.tag]['currentColor']
+        this.suspendcminDetection = true
+        this.suspendcmaxDetection = true
+      }
     }, 
     error => {
       console.error('an error occured when checking if url parsed: ', error)
@@ -60,9 +77,9 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
     this.queryProfviewService.changeStatParams.subscribe( (msg: string) => {
       // find out what station parameters we have, populate the dropdowns, and make sure the defaults make sense
       this.statParams = this.queryProfviewService.statParams
-      this.xAxis = this.choose_defaults(this.defaultX)
-      this.yAxis = this.choose_defaults(this.defaultY)
-      this.zAxis = this.choose_defaults(this.defaultZ)
+      this.xAxis = this.choose_defaults(this.xAxis)
+      this.yAxis = this.choose_defaults(this.yAxis)
+      this.zAxis = this.choose_defaults(this.zAxis)
     }, 
     error => {
       console.error('an error occured when listening to changeStatParams: ', error)
@@ -76,6 +93,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
         // remove plot
         this.activePlots = this.activePlots.filter(id => id !== message.id);
       }
+      this.queryProfviewService.set_map_state('profiles', this.activePlots.join(','))
+      this.queryProfviewService.set_url()
       this.make_chart();
     });
   }
@@ -89,19 +108,27 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   x_change(x: string): void {
+    this.queryProfviewService.set_map_state('x'+this.tag, x)
+    this.queryProfviewService.set_url()
     this.make_chart()
   }
 
   y_change(y: string): void {
+    this.queryProfviewService.set_map_state('y'+this.tag, y)
+    this.queryProfviewService.set_url()
     this.make_chart()
   }
 
   z_change(z: string): void {
+    this.queryProfviewService.set_map_state('z'+this.tag, z)
+    this.queryProfviewService.set_url()
     this.make_chart()
   }
 
   z_min_change(cmin: number): void {
     this.cmin = cmin
+    this.queryProfviewService.set_map_state('cmin'+this.tag, String(cmin))
+    this.queryProfviewService.set_url()
     this.suspendcminDetection = true
     this.suspendcmaxDetection = true
     this.make_chart()
@@ -109,6 +136,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
   z_max_change(cmax: number): void {
     this.cmax = cmax
+    this.queryProfviewService.set_map_state('cmax'+this.tag, String(cmax))
+    this.queryProfviewService.set_url()
     this.suspendcminDetection = true
     this.suspendcmaxDetection = true
     this.make_chart()
@@ -116,6 +145,8 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
   colorscale_change(colorscale: string): void {
     this.currentColor = colorscale
+    this.queryProfviewService.set_map_state('currentColor'+this.tag, colorscale )
+    this.queryProfviewService.set_url()
     this.suspendcminDetection = true
     this.suspendcmaxDetection = true
     this.make_chart()
@@ -169,8 +200,16 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
 
       // append the colorscale calibration info based on global max/min across all profiles
       // also handle special z axes
-      if(!this.suspendcminDetection) this.cmin = Math.min(...minZ)
-      if(!this.suspendcmaxDetection) this.cmax = Math.max(...maxZ)
+      if(!this.suspendcminDetection) {
+        this.cmin = Math.min(...minZ)
+        this.queryProfviewService.set_map_state('cmin'+this.tag, String(this.cmin))
+        this.queryProfviewService.set_url()
+      }
+      if(!this.suspendcmaxDetection) {
+        this.cmax = Math.max(...maxZ)
+        this.queryProfviewService.set_map_state('cmax'+this.tag, String(this.cmax))
+        this.queryProfviewService.set_url()
+      }
       data = data.map( d => {
         d.marker.cmin = this.cmin
         d.marker.cmax = this.cmax
@@ -200,7 +239,23 @@ export class VarplotComponent implements OnInit, AfterViewInit, OnChanges {
       // update graph on change
       this.graph = {
         data: data,
-        layout: this.generate_layout(this.yAxis.includes('pres'), data.length <= 10)
+        layout: this.generate_layout(this.yAxis.includes('pres'), data.length <= 10),
+        // config adds / removes modbar buttons
+        config: {
+          modeBarButtonsToRemove: ['resetScale2d'],
+          modeBarButtonsToAdd: [{
+            name: 'Home Axes',
+            icon: {
+              'width': 500,
+              'height': 600,
+              'path': 'm786 296v-267q0-15-11-26t-25-10h-214v214h-143v-214h-214q-15 0-25 10t-11 26v267q0 1 0 2t0 2l321 264 321-264q1-1 1-4z m124 39l-34-41q-5-5-12-6h-2q-7 0-12 3l-386 322-386-322q-7-4-13-4-7 2-12 7l-35 41q-4 5-3 13t6 12l401 334q18 15 42 15t43-15l136-114v109q0 8 5 13t13 5h107q8 0 13-5t5-13v-227l122-102q5-5 6-12t-4-13z',
+              'transform': "matrix(0.7 0 0 -0.7 -100 600)" 
+            },
+            click: function(gd) {
+              this.make_chart()
+            }.bind(this)
+          }]
+        }
       }
     },
     error => {
