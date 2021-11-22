@@ -1,0 +1,24 @@
+<section class="mat-typography"><p>Month Subtrahend Selected:</p></section>
+<button mat-icon-button matTooltip="-1 month" (click)="increment(-1)"  id="minIncrement">
+  <p>&ndash;</p>
+</button>
+<mat-form-field id="dateInput">
+    <input matInput [matDatepicker]="dp"
+     placeholder="Month and Year"
+     [formControl]="dateForm"
+     (dateChange)="displaydate_changed($event.value)"
+     matTooltip="select date of grid data on display"
+     [min]="minDate" [max]="maxDate" >
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker
+                    #dp
+                    startView="multi-year"
+                    (dateChange)="displaydate_changed($event.value)"
+                    (yearSelected)="chosenYearHandler($event.year())"
+                    (monthSelected)="chosenMonthHandler($event.month())"
+                    panelClass="example-month-picker">
+    </mat-datepicker>
+  </mat-form-field>
+<button mat-icon-button matTooltip="+1 month" (click)="increment(1)"  id="plusIncrement">
+  +
+</button>

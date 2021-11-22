@@ -16,6 +16,7 @@ export class SidebarNavGridComponent implements OnInit {
   public paramMode: boolean
   public monthPicker: boolean
   public initSet: boolean = false
+  public compareMode: boolean = false
 
   ngOnInit() {
     this.paramMode = this.queryGridService.getParamMode()
@@ -29,7 +30,7 @@ export class SidebarNavGridComponent implements OnInit {
       }
       this.initSet = true
     })
-    
+
     this.queryGridService.change.subscribe(msg => {
       this.paramMode = this.queryGridService.getParamMode();
       const gridName = this.queryGridService.getGridName()
@@ -76,6 +77,10 @@ export class SidebarNavGridComponent implements OnInit {
       this.queryGridService.sendProperty(param, broadcastChange)
     }
     this.queryGridService.sendParamMode(this.paramMode);
+  }
+
+  public compareModeToggle(): void{
+    this.compareMode = !this.compareMode;
   }
 
 }

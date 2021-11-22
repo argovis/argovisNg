@@ -1,29 +1,45 @@
 <div class="sidebar-nav-grid">
-<app-month-picker *ngIf="monthPicker" class="date-form"
-  [hidden]="paramMode">
-</app-month-picker>
-<app-date-picker *ngIf="!monthPicker" class="date-form"
-  [hidden]="paramMode">
-</app-date-picker>
-<app-pres-sel class="pres-form">
-</app-pres-sel>
-<app-grid-color-picker></app-grid-color-picker>
-<app-grid-picker class="grid-form" [paramMode]="paramMode"></app-grid-picker>
 <button mat-icon-button matTooltip="clear all shapes from map" (click)="clearGrids()" >
     <mat-icon aria-label="clear grid layers">layers_clear</mat-icon>
   </button>
-  <button mat-icon-button matTooltip="reset map to starting position and settings." (click)="resetToStart()" >
+<button mat-icon-button matTooltip="reset map to starting position and settings." (click)="resetToStart()" >
     <mat-icon aria-label="reset to starting view">restore_page</mat-icon>
   </button>
-  <mat-slide-toggle matTooltip="toggle on to display grid globally"
+<mat-slide-toggle matTooltip="toggle on to subtract another grid"
+  color="accent" [checked]="compareMode"
+  (change)="compareModeToggle()"> Compare Mode
+</mat-slide-toggle>
+
+<app-grid-picker class="grid-form" [paramMode]="paramMode"></app-grid-picker>
+<app-grid-subtrahend-picker class="grid-form" [paramMode]="paramMode"
+[hidden]="!compareMode"> </app-grid-subtrahend-picker>
+<app-month-picker *ngIf="monthPicker" class="date-form"
+  [hidden]="paramMode">
+</app-month-picker>
+
+<app-month-subtrahend-picker *ngIf="monthPicker" class="date-form"
+  [hidden]="!compareMode">
+</app-month-subtrahend-picker>
+
+
+
+<app-pres-sel class="pres-form">
+</app-pres-sel>
+<app-date-picker *ngIf="!monthPicker" class="date-form"
+  [hidden]="paramMode">
+</app-date-picker>
+
+<app-grid-color-picker></app-grid-color-picker>
+
+  <!--<mat-slide-toggle matTooltip="toggle on to display grid globally"
                    color="accent" [checked]="interpolateBool"
                    (change)="interpolateBoolToggle($event.checked)">Interpolate Grid
   </mat-slide-toggle>
   <mat-slide-toggle matTooltip="toggle on to display grid parameters"
   color="accent" [checked]="paramMode"
   (change)="paramModeToggle($event.checked)">Grid Parameters
-</mat-slide-toggle>
-  <app-grid-compare-picker class="grid-picker-form"></app-grid-compare-picker>
+</mat-slide-toggle>-->
+
 </div>
 <a class="nav-link"
 href="https://argovis.colorado.edu/docs/Gridded_Argovis.html"

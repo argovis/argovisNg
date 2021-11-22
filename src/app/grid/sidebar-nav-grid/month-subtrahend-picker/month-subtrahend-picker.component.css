@@ -1,0 +1,17 @@
+
+#minusIncrement, #plusIncrement{
+    display:inline-block;
+    transform: scale(1);
+}
+
+#dateInput {
+    width: 135px;
+    display:inline-block;
+}
+/*
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+} */

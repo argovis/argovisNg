@@ -4,11 +4,12 @@ import { GridParamGroup, GridGroup, EarthProperty, ModelParam, GridMeta } from '
 import { SelectGridService } from '../../select-grid.service';
 
 @Component({
-  selector: 'app-grid-picker',
-  templateUrl: './grid-picker.component.html',
-  styleUrls: ['./grid-picker.component.css']
+  selector: 'app-grid-subtrahend-picker',
+  templateUrl: './grid-subtrahend-picker.component.html',
+  styleUrls: ['./grid-subtrahend-picker.component.css']
 })
-export class GridPickerComponent implements OnInit {
+export class GridSubtrahendPickerComponent implements OnInit {
+
   constructor(private queryGridService: QueryGridService,
               private selectGridService: SelectGridService) { }
 
@@ -82,7 +83,7 @@ export class GridPickerComponent implements OnInit {
       //safe to update grid and broadcast change.
       this.queryGridService.sendGrid(this.gridName, broadcastChange)
     })
-  } 
+  }
 
   selChange(gridName: string ): void {
     this.gridName = gridName
@@ -119,4 +120,5 @@ export class GridPickerComponent implements OnInit {
     const notifyChange = true
     this.queryGridService.sendGridParam(this.gridName, this.gridParam, notifyChange)
   }
+
 }

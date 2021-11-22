@@ -15,26 +15,26 @@ export class GridColorPickerComponent implements OnInit {
 
   ngOnInit() {
     this.availableColorscales = [
-      {viewValue: 'Thermal', colorScale: 'thermal'},
-      {viewValue: 'Haline', colorScale: 'haline'},
-      {viewValue: 'Ice', colorScale: 'ice'}, 
-      {viewValue: 'Balance', colorScale: 'balance'},
+	  {viewValue: 'Balance', colorScale: 'balance'},
+	  {viewValue: 'Blues', colorScale: 'Blues'},
+	  {viewValue: 'Blue to Green', colorScale: 'BuGn'},
+	  {viewValue: 'Blue to Purple', colorScale: 'BuPu'},
+	  {viewValue: 'Greens', colorScale: 'Greens'},
+	  {viewValue: 'Green to Blue', colorScale: 'GnBu'},
+	  {viewValue: 'Greys', colorScale: 'Greys'},
+	  {viewValue: 'Haline', colorScale: 'haline'},
+	  {viewValue: 'Ice', colorScale: 'ice'},
+	  {viewValue: 'Purple Blue Green', colorScale: 'PuBuGn'},
+	  {viewValue: 'Purple to Red', colorScale: 'PuRd'},
+	  {viewValue: 'Purples', colorScale: 'Purples'},
+	  {viewValue: 'Oranges', colorScale: 'Oranges'},
+	  {viewValue: 'Orange to Red', colorScale: 'OrRd'},
+	  {viewValue: 'Reds', colorScale: 'Reds'},
+	  {viewValue: 'Red Purple', colorScale: 'RdPu'},
       {viewValue: 'Red Yellow Blue', colorScale: 'RdYlBu'},
-      {viewValue: 'Yellow Orange Red', colorScale: 'YlOrRd'},
-      {viewValue: 'Yellow Orange Brown', colorScale: 'YlOrBr'},
-      {viewValue: 'Reds', colorScale: 'Reds'},
-      {viewValue: 'Red Purple', colorScale: 'RdPu'},
-      {viewValue: 'Purples', colorScale: 'Purples'},
-      {viewValue: 'Purple to Red', colorScale: 'PuRd'},
-      {viewValue: 'Purple Blue Green', colorScale: 'PuBuGn'},
-      {viewValue: 'Orange to Red', colorScale: 'OrRd'},
-      {viewValue: 'Oranges', colorScale: 'Oranges'},
-      {viewValue: 'Greys', colorScale: 'Greys'},
-      {viewValue: 'Greens', colorScale: 'Greens'},
-      {viewValue: 'Green to Blue', colorScale: 'GnBu'},
-      {viewValue: 'Blue to Purple', colorScale: 'BuPu'},
-      {viewValue: 'Blue to Green', colorScale: 'BuGn'},
-      {viewValue: 'Blues', colorScale: 'Blues'}
+	  {viewValue: 'Thermal', colorScale: 'thermal'},
+	  {viewValue: 'Yellow Orange Brown', colorScale: 'YlOrBr'},
+	  {viewValue: 'Yellow Orange Red', colorScale: 'YlOrRd'}
     ]
 
     this.colorScale = this.queryGridService.getColorScale()

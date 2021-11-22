@@ -10,7 +10,7 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { PlatformWindowComponent } from './platform-window/platform-window.component';
 import { GlobeScatterComponent } from './globe-scatter/globe-scatter.component';
 import { VarplotComponent } from './varplot/varplot.component';
- 
+
 PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({

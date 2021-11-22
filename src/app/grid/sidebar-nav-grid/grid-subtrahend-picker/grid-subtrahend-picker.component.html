@@ -1,18 +1,7 @@
-<section *ngIf="!paramMode" class="mat-typography"><p>Earth Property:</p></section>
+<section *ngIf="!paramMode" class="mat-typography"><p>Grid Subtrahend Selected:</p></section>
 <div *ngIf="!paramMode" class='input-div'>
   <mat-form-field>
-    <mat-label>Property</mat-label>
-      <mat-select [(value)]="selectedProperty" (selectionChange)="changeProperty($event.value)">
-          <mat-option *ngFor="let property of availableProperties"  [(value)]="property.param">
-            {{property.viewValue}}
-          </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<section *ngIf="!paramMode" class="mat-typography"><p>Grid Selected:</p></section>
-<div *ngIf="!paramMode" class='input-div'>
-  <mat-form-field>
-    <mat-label>Grid</mat-label>
+    <mat-label>Grid Subtrahend</mat-label>
       <mat-select [(value)]="gridName" (selectionChange)="selChange($event.value)">
           <mat-option *ngFor="let grid of availableGrids" [(value)]="grid.grid">
             {{grid.viewValue}}
@@ -23,7 +12,7 @@
 <section *ngIf="paramMode" class="mat-typography"><p>Grid Param Selected:</p></section>
 <div *ngIf="paramMode" class='input-div'>
   <mat-form-field>
-    <mat-label>Grid</mat-label>
+    <mat-label>Grid Subtrahend</mat-label>
     <mat-select [(ngModel)]="gridName" (selectionChange)="selChange($event.value)">
       <mat-option *ngFor="let grid of availableGrids" [(value)]="grid.grid">
         {{grid.viewValue}}
